@@ -1,0 +1,10 @@
+com/thumbnailgen/service/ImageService.class
+com/thumbnailgen/service/AIAssistantService.class
+com/thumbnailgen/service/HuggingFaceService$PlacementResult.class
+com/thumbnailgen/service/AIAssistantService$ThumbnailStyle.class
+com/thumbnailgen/service/ImageService$ColorScheme.class
+com/thumbnailgen/ThumbnailGeneratorApplication.class
+com/thumbnailgen/service/PromptEnhancerService.class
+com/thumbnailgen/controller/ThumbnailController.class
+com/thumbnailgen/service/HuggingFaceService.class
+com/thumbnailgen/service/ImageService$RegionScore.class
