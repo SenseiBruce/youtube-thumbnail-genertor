@@ -37,7 +37,7 @@ public class AIAssistantService {
         }
         
         try {
-            String prompt = "Create YouTube thumbnail for: " + topic + ". Return JSON: {\"title\":\"3-5 words\",\"primaryColor\":\"#hex\",\"accentColor\":\"#hex\",\"font\":\"Impact\",\"placement\":\"" + placement + "\"}";
+          String prompt = "Create YouTube thumbnail for: " + topic + ". Return JSON: {\"title\":\"3-5 words\",\"primaryColor\":\"#hex\",\"accentColor\":\"#hex\",\"font\":\"Impact\",\"placement\":\"" + placement + "\",\"style\":\"bold|cinematic|fun|minimal\"}";
             
             String json = "{\"model\":\"gpt-3.5-turbo\",\"messages\":[{\"role\":\"user\",\"content\":\"" + prompt + "\"}],\"max_tokens\":100}";
             
