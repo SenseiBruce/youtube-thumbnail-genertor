@@ -17,7 +17,9 @@ public class ImageService {
 
     public byte[] generateThumbnail(byte[] imageBytes, String title) throws IOException {
         BufferedImage src = ImageIO.read(new ByteArrayInputStream(imageBytes));
-        if (src == null) throw new IOException("Invalid image file");
+        if (src == null) {
+            throw new IOException("Invalid image file");
+        }
 
         BufferedImage enhanced = enhanceImage(src);
         BufferedImage finalImage = drawSmartTitle(enhanced, title);
@@ -29,7 +31,9 @@ public class ImageService {
 
     public byte[] generateAIThumbnail(byte[] imageBytes, AIAssistantService.ThumbnailStyle aiStyle) throws IOException {
         BufferedImage src = ImageIO.read(new ByteArrayInputStream(imageBytes));
-        if (src == null) throw new IOException("Invalid image file");
+        if (src == null) {
+            throw new IOException("Invalid image file");
+        }
 
         BufferedImage enhanced = enhanceImage(src);
         BufferedImage finalImage = drawAIStyledTitle(enhanced, aiStyle);

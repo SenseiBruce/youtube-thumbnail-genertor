@@ -15,7 +15,9 @@ public class PromptEnhancerService {
     private final Random random = new Random();
 
     public String enhance(String rawTitle) {
-        if (rawTitle == null || rawTitle.isBlank()) return "MUST WATCH";
+        if (rawTitle == null || rawTitle.isBlank()) {
+            return "MUST WATCH";
+        }
         
         String[] words = rawTitle.trim().split("\\s+");
         String keyWord = findKeyWord(words);
