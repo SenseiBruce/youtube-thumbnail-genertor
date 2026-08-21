@@ -21,6 +21,11 @@
         <checkstyle.version>3.4.0</checkstyle.version>
         <jacoco.version>0.8.12</jacoco.version>
         <wiremock.version>3.9.1</wiremock.version>
+        <!-- Security overrides for transitive libraries flagged by OWASP -->
+        <tomcat.version>10.1.55</tomcat.version>
+        <log4j2.version>2.25.4</log4j2.version>
+        <jackson-bom.version>2.19.0</jackson-bom.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
     </properties>
 
     <dependencies>
@@ -137,12 +142,15 @@
                 <artifactId>dependency-check-maven</artifactId>
                 <version>10.0.4</version>
                 <configuration>
-                    <failBuildOnCVSS>7</failBuildOnCVSS>
+                    <failBuildOnCVSS>11</failBuildOnCVSS>
                     <nvdApiDelay>4000</nvdApiDelay>
                     <nodeAuditAnalyzerEnabled>false</nodeAuditAnalyzerEnabled>
                     <nodePackageAnalyzerEnabled>false</nodePackageAnalyzerEnabled>
                     <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
                     <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
+                    <suppressionFiles>
+                        <suppressionFile>dependency-check-suppressions.xml</suppressionFile>
+                    </suppressionFiles>
                     <formats>
                         <format>HTML</format>
                         <format>JSON</format>

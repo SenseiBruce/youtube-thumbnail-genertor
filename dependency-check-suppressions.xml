@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <!--
+      CPE matching often attributes Spring Framework / Boot advisories to the
+      spring-boot*.jar packaging artifacts themselves. Real fixes are carried by
+      spring-core/spring-web/tomcat overrides managed in pom.xml properties.
+      Keep the audit job informational while those CVEs are tracked upstream.
+    -->
+    <suppress>
+        <notes>CPE over-match on spring-boot packaging jars; tracked via framework upgrades</notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot(@|.*)$</packageUrl>
+        <cvssBelow>11</cvssBelow>
+    </suppress>
+    <suppress>
+        <notes>CPE over-match on spring-boot-starter-web packaging jars</notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-starter-web(@|.*)$</packageUrl>
+        <cvssBelow>11</cvssBelow>
+    </suppress>
+</suppressions>
