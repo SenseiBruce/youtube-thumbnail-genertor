@@ -109,4 +109,16 @@ class ThumbnailControllerTest {
         mockMvc.perform(multipart("/api/thumbnail/generate").param("title", "x"))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void generate_rejectsNonImageContentType() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                "file", "notes.txt", MediaType.TEXT_PLAIN_VALUE, new byte[]{1, 2, 3});
+
+        mockMvc.perform(multipart("/api/thumbnail/generate")
+                        .file(file)
+                        .param("title", "My Title"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("validation_error"));
+    }
 }
