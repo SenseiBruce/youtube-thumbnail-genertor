@@ -17,7 +17,9 @@ public class ImageService {
 
     public byte[] generateThumbnail(byte[] imageBytes, String title) throws IOException {
         BufferedImage src = ImageIO.read(new ByteArrayInputStream(imageBytes));
-        if (src == null) throw new IOException("Invalid image file");
+        if (src == null) {
+            throw new IOException("Invalid image file");
+        }
 
         BufferedImage enhanced = enhanceImage(src);
         BufferedImage finalImage = drawSmartTitle(enhanced, title);
@@ -29,7 +31,9 @@ public class ImageService {
 
     public byte[] generateAIThumbnail(byte[] imageBytes, AIAssistantService.ThumbnailStyle aiStyle) throws IOException {
         BufferedImage src = ImageIO.read(new ByteArrayInputStream(imageBytes));
-        if (src == null) throw new IOException("Invalid image file");
+        if (src == null) {
+            throw new IOException("Invalid image file");
+        }
 
         BufferedImage enhanced = enhanceImage(src);
         BufferedImage finalImage = drawAIStyledTitle(enhanced, aiStyle);
@@ -50,57 +54,69 @@ public class ImageService {
     }
 
     private BufferedImage drawSmartTitle(BufferedImage img, String title) {
-        int w = img.getWidth(), h = img.getHeight();
-        BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = out.createGraphics();
-        g.drawImage(img, 0, 0, null);
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        
-        // Apply safe margins (80px left/right, 60px top/bottom)
-        Rectangle safeZone = new Rectangle(80, 60, w - 160, h - 120);
-        
-        // Find safe regions within the safe zone
+        Canvas canvas = prepareCanvas(img);
+        Rectangle safeZone = safeZone(canvas.width, canvas.height);
         java.util.List<Rectangle> safeRegions = findSafeRegionsInZone(img, safeZone);
         Rectangle mainArea = safeRegions.get(0);
-        
-        // Draw gradient overlay if background is complex
+
         if (needsOverlay(img, mainArea)) {
-            drawGradientOverlay(g, mainArea);
+            drawGradientOverlay(canvas.graphics, mainArea);
         }
-        
-        // Draw main title with YouTube specs
-        drawYouTubeText(g, img, title, mainArea, true);
-        
-        // Add CTA if there's space
+
+        drawYouTubeText(canvas.graphics, img, title, mainArea, true);
+
         if (safeRegions.size() > 1) {
-            String cta = getRandomCTA();
-            drawYouTubeText(g, img, cta, safeRegions.get(1), false);
+            drawYouTubeText(canvas.graphics, img, getRandomCTA(), safeRegions.get(1), false);
         }
-        
-        g.dispose();
-        return out;
+
+        return canvas.finish();
     }
 
     private BufferedImage drawAIStyledTitle(BufferedImage img, AIAssistantService.ThumbnailStyle aiStyle) {
-        int w = img.getWidth(), h = img.getHeight();
+        Canvas canvas = prepareCanvas(img);
+        Rectangle safeZone = safeZone(canvas.width, canvas.height);
+        Rectangle textArea = getPlacementArea(safeZone, aiStyle.placement);
+
+        if (needsOverlay(img, textArea)) {
+            drawGradientOverlay(canvas.graphics, textArea);
+        }
+
+        drawAIText(canvas.graphics, aiStyle, textArea, canvas.height);
+        return canvas.finish();
+    }
+
+    private static Rectangle safeZone(int width, int height) {
+        return new Rectangle(80, 60, width - 160, height - 120);
+    }
+
+    private static Canvas prepareCanvas(BufferedImage img) {
+        int w = img.getWidth();
+        int h = img.getHeight();
         BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = out.createGraphics();
         g.drawImage(img, 0, 0, null);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        
-        Rectangle safeZone = new Rectangle(80, 60, w - 160, h - 120);
-        Rectangle textArea = getPlacementArea(safeZone, aiStyle.placement);
-        
-        if (needsOverlay(img, textArea)) {
-            drawGradientOverlay(g, textArea);
+        return new Canvas(out, g, w, h);
+    }
+
+    private static final class Canvas {
+        private final BufferedImage image;
+        private final Graphics2D graphics;
+        private final int width;
+        private final int height;
+
+        private Canvas(BufferedImage image, Graphics2D graphics, int width, int height) {
+            this.image = image;
+            this.graphics = graphics;
+            this.width = width;
+            this.height = height;
         }
-        
-        drawAIText(g, aiStyle, textArea, h);
-        
-        g.dispose();
-        return out;
+
+        private BufferedImage finish() {
+            graphics.dispose();
+            return image;
+        }
     }
     
     private Rectangle getPlacementArea(Rectangle safeZone, String placement) {
@@ -349,117 +365,6 @@ public class ImageService {
             this.secondary = secondary;
             this.outline = outline;
         }
-    }
-    
-    private Font findOptimalFont(Graphics2D g, String text, int maxWidth, int maxHeight, boolean isMainTitle) {
-        String fontName = isMainTitle ? "Impact" : "Arial";
-        int startSize = isMainTitle ? Math.min(80, maxWidth / 6) : Math.min(40, maxWidth / 12);
-        int fontSize = Math.max(16, startSize);
-        
-        Font font = new Font(fontName, Font.BOLD, fontSize);
-        
-        // Reduce font size until text fits both width and height
-        while (fontSize > 16) {
-            g.setFont(font);
-            java.util.List<String> lines = wrapText(g, text, maxWidth);
-            FontMetrics fm = g.getFontMetrics();
-            int totalHeight = lines.size() * fm.getHeight();
-            
-            // Check if all lines fit within width
-            boolean fitsWidth = true;
-            for (String line : lines) {
-                if (fm.getStringBounds(line, g).getWidth() > maxWidth) {
-                    fitsWidth = false;
-                    break;
-                }
-            }
-            
-            if (fitsWidth && totalHeight <= maxHeight) break;
-            
-            fontSize -= 4;
-            font = new Font(fontName, Font.BOLD, fontSize);
-        }
-        
-        return font;
-    }
-    
-    private java.util.List<String> wrapText(Graphics2D g, String text, int maxWidth) {
-        java.util.List<String> lines = new java.util.ArrayList<>();
-        FontMetrics fm = g.getFontMetrics();
-        
-        String[] words = text.split(" ");
-        StringBuilder currentLine = new StringBuilder();
-        
-        for (String word : words) {
-            String testLine = currentLine.length() == 0 ? word : currentLine + " " + word;
-            Rectangle2D bounds = fm.getStringBounds(testLine, g);
-            
-            if (bounds.getWidth() <= maxWidth) {
-                currentLine = new StringBuilder(testLine);
-            } else {
-                if (currentLine.length() > 0) {
-                    lines.add(currentLine.toString());
-                    currentLine = new StringBuilder(word);
-                } else {
-                    // Single word too long, add it anyway
-                    lines.add(word);
-                }
-            }
-        }
-        
-        if (currentLine.length() > 0) {
-            lines.add(currentLine.toString());
-        }
-        
-        return lines.isEmpty() ? java.util.Arrays.asList(text) : lines;
-    }
-
-    private Color averageColor(BufferedImage img) {
-        long sumR = 0, sumG = 0, sumB = 0;
-        int count = 0;
-        for (int y = 0; y < img.getHeight(); y += 20) {
-            for (int x = 0; x < img.getWidth(); x += 20) {
-                int rgb = img.getRGB(x, y);
-                sumR += (rgb >> 16) & 255;
-                sumG += (rgb >> 8) & 255;
-                sumB += rgb & 255;
-                count++;
-            }
-        }
-        return new Color((int) (sumR / count), (int) (sumG / count), (int) (sumB / count));
-    }
-
-    private java.util.List<Rectangle> findMultipleSafeRegions(BufferedImage img) {
-        int w = img.getWidth(), h = img.getHeight();
-        int rows = 4, cols = 4;
-        int cellW = w / cols, cellH = h / rows;
-        
-        java.util.List<RegionScore> regions = new java.util.ArrayList<>();
-        
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                int x0 = c * cellW, y0 = r * cellH;
-                double variance = brightnessVariance(img, x0, y0, cellW, cellH);
-                regions.add(new RegionScore(new Rectangle(x0, y0, cellW, cellH), variance));
-            }
-        }
-        
-        // Sort by variance (lower is better for text)
-        regions.sort((a, b) -> Double.compare(a.variance, b.variance));
-        
-        java.util.List<Rectangle> result = new java.util.ArrayList<>();
-        result.add(regions.get(0).rect); // Best region for main title
-        
-        // Find second best region that doesn't overlap significantly
-        for (int i = 1; i < regions.size(); i++) {
-            Rectangle candidate = regions.get(i).rect;
-            if (!overlapsSignificantly(result.get(0), candidate)) {
-                result.add(candidate);
-                break;
-            }
-        }
-        
-        return result;
     }
     
     private boolean overlapsSignificantly(Rectangle r1, Rectangle r2) {
