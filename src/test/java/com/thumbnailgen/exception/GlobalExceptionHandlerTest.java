@@ -32,4 +32,14 @@ class GlobalExceptionHandlerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("validation_error", response.getBody().get("error"));
     }
+
+    @Test
+    void handleAiIntegration_returnsServiceUnavailable() {
+        ResponseEntity<Map<String, Object>> response =
+                handler.handleAiIntegration(new AiIntegrationException("provider down"));
+
+        assertEquals(HttpStatus.SERVICE_UNAVAILABLE, response.getStatusCode());
+        assertEquals("ai_service_unavailable", response.getBody().get("error"));
+        assertEquals("provider down", response.getBody().get("message"));
+    }
 }

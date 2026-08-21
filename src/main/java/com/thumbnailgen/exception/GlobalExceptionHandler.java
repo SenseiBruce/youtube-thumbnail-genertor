@@ -42,6 +42,12 @@ public class GlobalExceptionHandler {
         return error(HttpStatus.PAYLOAD_TOO_LARGE, "payload_too_large", "Uploaded file exceeds size limit");
     }
 
+    @ExceptionHandler(AiIntegrationException.class)
+    public ResponseEntity<Map<String, Object>> handleAiIntegration(AiIntegrationException ex) {
+        log.error("AI integration failure: {}", ex.getMessage());
+        return error(HttpStatus.SERVICE_UNAVAILABLE, "ai_service_unavailable", ex.getMessage());
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
         log.warn("Illegal argument: {}", ex.getMessage());

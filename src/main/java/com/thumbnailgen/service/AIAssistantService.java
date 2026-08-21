@@ -1,14 +1,18 @@
 package com.thumbnailgen.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.thumbnailgen.exception.AiIntegrationException;
+import com.thumbnailgen.metrics.ThumbnailMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -18,20 +22,25 @@ import java.net.http.HttpResponse;
 public class AIAssistantService {
 
     private static final Logger log = LoggerFactory.getLogger(AIAssistantService.class);
-    private static final String OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions";
 
     private final String apiKey;
+    private final String chatUrl;
     private final HttpClient client;
     private final ObjectMapper objectMapper;
     private final HuggingFaceService huggingFaceService;
+    private final ThumbnailMetrics metrics;
 
     public AIAssistantService(
             @Value("${openai.api.key:}") String apiKey,
+            @Value("${openai.api.url:https://api.openai.com/v1/chat/completions}") String chatUrl,
             ObjectMapper objectMapper,
-            HuggingFaceService huggingFaceService) {
+            HuggingFaceService huggingFaceService,
+            ThumbnailMetrics metrics) {
         this.apiKey = apiKey == null ? "" : apiKey;
+        this.chatUrl = chatUrl;
         this.objectMapper = objectMapper;
         this.huggingFaceService = huggingFaceService;
+        this.metrics = metrics;
         this.client = HttpClient.newHttpClient();
     }
 
@@ -48,13 +57,15 @@ public class AIAssistantService {
                 HuggingFaceService.PlacementResult hfResult = huggingFaceService.analyzeImageForPlacement(imageBytes);
                 placement = hfResult.placement;
                 log.info("HuggingFace suggests placement: {} (confidence: {})", placement, hfResult.confidence);
-            } catch (Exception e) {
-                log.warn("HuggingFace placement failed, using default", e);
+            } catch (AiIntegrationException e) {
+                log.warn("HuggingFace placement failed, using default: {}", e.getMessage());
+                metrics.recordFallback();
             }
         }
 
         if (apiKey.isBlank()) {
             log.warn("OpenAI API key not configured; using fallback style");
+            metrics.recordFallback();
             return createDefaultWithPlacement(topic, placement);
         }
 
@@ -68,7 +79,7 @@ public class AIAssistantService {
             log.debug("Sending request to OpenAI");
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(OPENAI_CHAT_URL))
+                    .uri(URI.create(chatUrl))
                     .header("Authorization", "Bearer " + apiKey)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -83,14 +94,21 @@ public class AIAssistantService {
             }
 
             log.error("OpenAI API error: status={}", response.statusCode());
+            metrics.recordFallback();
             return createDefaultWithPlacement(topic, placement);
-        } catch (Exception e) {
-            log.error("Exception calling OpenAI: {}", e.getMessage(), e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new AiIntegrationException("OpenAI request interrupted", e);
+        } catch (JsonProcessingException e) {
+            throw new AiIntegrationException("Failed to build OpenAI request JSON", e);
+        } catch (IOException e) {
+            log.error("I/O error calling OpenAI: {}", e.getMessage());
+            metrics.recordFallback();
             return createDefaultWithPlacement(topic, placement);
         }
     }
 
-    private String buildRequestBody(String prompt) throws Exception {
+    private String buildRequestBody(String prompt) throws JsonProcessingException {
         ObjectNode root = objectMapper.createObjectNode();
         root.put("model", "gpt-3.5-turbo");
         root.put("max_tokens", 100);
@@ -108,11 +126,11 @@ public class AIAssistantService {
             JsonNode root = objectMapper.readTree(response);
             JsonNode contentNode = root.path("choices").path(0).path("message").path("content");
             if (contentNode.isMissingNode() || contentNode.isNull()) {
+                metrics.recordFallback();
                 return createDefault(topic);
             }
 
             String content = contentNode.asText().trim();
-            // Model may wrap JSON in markdown fences
             if (content.startsWith("```")) {
                 int start = content.indexOf('{');
                 int end = content.lastIndexOf('}');
@@ -133,8 +151,9 @@ public class AIAssistantService {
                     "Impact",
                     "center"
             );
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             log.warn("Failed to parse OpenAI response, using default", e);
+            metrics.recordFallback();
             return createDefault(topic);
         }
     }
