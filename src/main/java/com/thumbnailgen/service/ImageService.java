@@ -44,7 +44,8 @@ public class ImageService {
     }
 
     private BufferedImage enhanceImage(BufferedImage src) {
-        BufferedImage resized = Scalr.resize(src, Scalr.Method.QUALITY, 1280, 720, Scalr.OP_ANTIALIAS);
+        BufferedImage resized = Scalr.resize(
+                src, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, 1280, 720, Scalr.OP_ANTIALIAS);
         RescaleOp rescale = new RescaleOp(1.05f, 5f, null);
         BufferedImage bright = new BufferedImage(resized.getWidth(), resized.getHeight(), BufferedImage.TYPE_INT_ARGB);
         rescale.filter(resized, bright);
