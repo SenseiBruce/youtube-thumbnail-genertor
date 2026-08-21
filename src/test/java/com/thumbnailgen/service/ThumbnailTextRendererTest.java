@@ -61,6 +61,7 @@ class ThumbnailTextRendererTest {
         g.dispose();
         assertTrue(fitted.getSize() < huge.getSize());
         assertTrue(fitted.getSize() >= 30);
+        assertTrue(fitted.getSize() <= 36);
     }
 
     @Test
