@@ -22,7 +22,7 @@ class ImageServiceTest {
 
     @BeforeEach
     void setUp() {
-        imageService = new ImageService();
+        imageService = new ImageService(new ImageEnhancer(), new ThumbnailTextRenderer());
     }
 
     @Test
