@@ -2,7 +2,17 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.2.1] - 2026-08-21
+
+### Removed
+- `package.json` / `package-lock.json` npm shim (this is a Maven project)
+
+### Changed
+- CI `lint`/`test` jobs invoke `./mvnw -B checkstyle:check`, `./mvnw -B test`, and `./mvnw -B verify` directly
+- Actuator health details always exposed; MockMvc test asserts `/actuator/health` is UP
+
 ## [1.2.0] - 2026-08-21
+
 
 ### Added
 - `ImageEnhancer` and `ThumbnailTextRenderer` collaborators with dedicated tests
