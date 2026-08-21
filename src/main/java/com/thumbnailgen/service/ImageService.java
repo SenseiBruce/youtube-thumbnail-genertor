@@ -44,7 +44,8 @@ public class ImageService {
     }
 
     private BufferedImage enhanceImage(BufferedImage src) {
-        BufferedImage resized = Scalr.resize(src, Scalr.Method.QUALITY, 1280, 720, Scalr.OP_ANTIALIAS);
+        BufferedImage resized = Scalr.resize(
+                src, Scalr.Method.QUALITY, Scalr.Mode.FIT_EXACT, 1280, 720, Scalr.OP_ANTIALIAS);
         RescaleOp rescale = new RescaleOp(1.05f, 5f, null);
         BufferedImage bright = new BufferedImage(resized.getWidth(), resized.getHeight(), BufferedImage.TYPE_INT_ARGB);
         rescale.filter(resized, bright);
@@ -55,7 +56,7 @@ public class ImageService {
 
     private BufferedImage drawSmartTitle(BufferedImage img, String title) {
         Canvas canvas = prepareCanvas(img);
-        Rectangle safeZone = safeZone(canvas.width, canvas.height);
+        Rectangle safeZone = TextPlacement.safeZone(canvas.width, canvas.height);
         java.util.List<Rectangle> safeRegions = findSafeRegionsInZone(img, safeZone);
         Rectangle mainArea = safeRegions.get(0);
 
@@ -74,8 +75,8 @@ public class ImageService {
 
     private BufferedImage drawAIStyledTitle(BufferedImage img, AIAssistantService.ThumbnailStyle aiStyle) {
         Canvas canvas = prepareCanvas(img);
-        Rectangle safeZone = safeZone(canvas.width, canvas.height);
-        Rectangle textArea = getPlacementArea(safeZone, aiStyle.placement);
+        Rectangle safeZone = TextPlacement.safeZone(canvas.width, canvas.height);
+        Rectangle textArea = TextPlacement.getPlacementArea(safeZone, aiStyle.placement);
 
         if (needsOverlay(img, textArea)) {
             drawGradientOverlay(canvas.graphics, textArea);
@@ -83,10 +84,6 @@ public class ImageService {
 
         drawAIText(canvas.graphics, aiStyle, textArea, canvas.height);
         return canvas.finish();
-    }
-
-    private static Rectangle safeZone(int width, int height) {
-        return new Rectangle(80, 60, width - 160, height - 120);
     }
 
     private static Canvas prepareCanvas(BufferedImage img) {
@@ -116,22 +113,6 @@ public class ImageService {
         private BufferedImage finish() {
             graphics.dispose();
             return image;
-        }
-    }
-    
-    private Rectangle getPlacementArea(Rectangle safeZone, String placement) {
-        switch (placement.toLowerCase()) {
-            case "top":
-                return new Rectangle(safeZone.x, safeZone.y, safeZone.width, safeZone.height / 3);
-            case "bottom":
-                return new Rectangle(safeZone.x, safeZone.y + 2 * safeZone.height / 3, safeZone.width, safeZone.height / 3);
-            case "left":
-                return new Rectangle(safeZone.x, safeZone.y, safeZone.width / 2, safeZone.height);
-            case "right":
-                return new Rectangle(safeZone.x + safeZone.width / 2, safeZone.y, safeZone.width / 2, safeZone.height);
-            default: // center
-                return new Rectangle(safeZone.x + safeZone.width / 4, safeZone.y + safeZone.height / 4, 
-                                   safeZone.width / 2, safeZone.height / 2);
         }
     }
     

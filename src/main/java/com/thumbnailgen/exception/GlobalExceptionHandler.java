@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
+import jakarta.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -40,6 +42,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleMaxUpload(MaxUploadSizeExceededException ex) {
         log.warn("Upload too large: {}", ex.getMessage());
         return error(HttpStatus.PAYLOAD_TOO_LARGE, "payload_too_large", "Uploaded file exceeds size limit");
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleConstraintViolation(ConstraintViolationException ex) {
+        String message = ex.getConstraintViolations().stream()
+                .map(v -> v.getPropertyPath() + ": " + v.getMessage())
+                .collect(Collectors.joining("; "));
+        log.warn("Constraint violation: {}", message);
+        return error(HttpStatus.BAD_REQUEST, "validation_error", message);
+    }
+
+    @ExceptionHandler(AiIntegrationException.class)
+    public ResponseEntity<Map<String, Object>> handleAiIntegration(AiIntegrationException ex) {
+        log.error("AI integration failure: {}", ex.getMessage());
+        return error(HttpStatus.SERVICE_UNAVAILABLE, "ai_service_unavailable", ex.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

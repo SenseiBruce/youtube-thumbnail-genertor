@@ -1,12 +1,16 @@
 package com.thumbnailgen.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.thumbnailgen.exception.AiIntegrationException;
+import com.thumbnailgen.metrics.ThumbnailMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -17,17 +21,22 @@ import java.util.Base64;
 public class HuggingFaceService {
 
     private static final Logger log = LoggerFactory.getLogger(HuggingFaceService.class);
-    private static final String DETR_URL = "https://api-inference.huggingface.co/models/facebook/detr-resnet-50";
 
     private final String apiKey;
+    private final String inferenceUrl;
     private final HttpClient client;
     private final ObjectMapper objectMapper;
+    private final ThumbnailMetrics metrics;
 
     public HuggingFaceService(
             @Value("${huggingface.api.key:}") String apiKey,
-            ObjectMapper objectMapper) {
+            @Value("${huggingface.api.url:https://api-inference.huggingface.co/models/facebook/detr-resnet-50}") String inferenceUrl,
+            ObjectMapper objectMapper,
+            ThumbnailMetrics metrics) {
         this.apiKey = apiKey == null ? "" : apiKey;
+        this.inferenceUrl = inferenceUrl;
         this.objectMapper = objectMapper;
+        this.metrics = metrics;
         this.client = HttpClient.newHttpClient();
     }
 
@@ -36,6 +45,7 @@ public class HuggingFaceService {
 
         if (apiKey.isBlank()) {
             log.warn("HuggingFace API key not configured; defaulting to center placement");
+            metrics.recordFallback();
             return new PlacementResult("center", 0.5);
         }
 
@@ -45,7 +55,7 @@ public class HuggingFaceService {
             body.put("inputs", base64Image);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(DETR_URL))
+                    .uri(URI.create(inferenceUrl))
                     .header("Authorization", "Bearer " + apiKey)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body)))
@@ -58,30 +68,32 @@ public class HuggingFaceService {
                 return analyzeDetections(response.body());
             }
             log.warn("HuggingFace non-OK status: {}", response.statusCode());
-        } catch (Exception e) {
-            log.error("HuggingFace error: {}", e.getMessage(), e);
-        }
-
-        return new PlacementResult("center", 0.5);
-    }
-
-    private PlacementResult analyzeDetections(String response) {
-        try {
-            if (response.contains("person") || response.contains("face")) {
-                log.info("Face/person detected — placing text at bottom");
-                return new PlacementResult("bottom", 0.8);
-            }
-
-            if (response.contains("food") || response.contains("cake") || response.contains("pizza")) {
-                log.info("Food detected — placing text at top");
-                return new PlacementResult("top", 0.7);
-            }
-
-            return new PlacementResult("center", 0.6);
-        } catch (Exception e) {
-            log.warn("Failed to analyze detections", e);
+            metrics.recordFallback();
+            return new PlacementResult("center", 0.5);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new AiIntegrationException("HuggingFace request interrupted", e);
+        } catch (JsonProcessingException e) {
+            throw new AiIntegrationException("Failed to build HuggingFace request JSON", e);
+        } catch (IOException e) {
+            log.error("HuggingFace I/O error: {}", e.getMessage());
+            metrics.recordFallback();
             return new PlacementResult("center", 0.5);
         }
+    }
+
+    PlacementResult analyzeDetections(String response) {
+        if (response.contains("person") || response.contains("face")) {
+            log.info("Face/person detected — placing text at bottom");
+            return new PlacementResult("bottom", 0.8);
+        }
+
+        if (response.contains("food") || response.contains("cake") || response.contains("pizza")) {
+            log.info("Food detected — placing text at top");
+            return new PlacementResult("top", 0.7);
+        }
+
+        return new PlacementResult("center", 0.6);
     }
 
     public static class PlacementResult {

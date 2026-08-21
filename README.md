@@ -6,19 +6,20 @@ on uploaded images with optional ChatGPT styling and HuggingFace-based text plac
 ## Architecture
 
 ```
-Client ──► ThumbnailController
+Client ──► ThumbnailController (@Validated)
               ├── PromptEnhancerService   (local title hooks)
-              ├── ImageService            (resize, enhance, draw text)
+              ├── ImageService + TextPlacement  (resize 1280x720, draw text)
               ├── AIAssistantService      (OpenAI chat completions)
-              └── HuggingFaceService      (object detection → placement)
+              ├── HuggingFaceService      (object detection → placement)
+              └── ThumbnailMetrics        (Micrometer fallback counter)
 ```
 
 | Layer | Responsibility |
 |-------|----------------|
-| Controller | Multipart upload endpoints, response headers |
+| Controller | Multipart upload endpoints with Bean Validation |
 | Services | Prompt enhancement, image processing, AI clients |
-| Exception handler | Typed JSON errors for I/O and validation failures |
-| Actuator | `/actuator/health` for liveness/readiness |
+| Exception handler | Typed JSON errors (`validation_error`, `ai_service_unavailable`, …) |
+| Actuator | `/actuator/health` and `/actuator/metrics` |
 
 ## Prerequisites
 
@@ -38,43 +39,38 @@ cp .env.example .env
 # HUGGINGFACE_API_KEY=...
 ```
 
-Keys are bound via `src/main/resources/application.properties`:
+Keys and optional override URLs are bound via `src/main/resources/application.properties`:
 
 ```properties
 openai.api.key=${OPENAI_API_KEY:}
 huggingface.api.key=${HUGGINGFACE_API_KEY:}
 ```
 
-If keys are unset, AI endpoints fall back to deterministic local styles so the app still runs.
+If keys are unset, AI endpoints fall back to deterministic local styles and increment
+`thumbnail.ai.fallback.count` (visible under `/actuator/metrics`).
 
 > **Security note:** Any API keys previously committed to this repository should be
 > rotated in the OpenAI and HuggingFace dashboards.
 
 ## Install, build, and test
 
-From a fresh clone:
+From a fresh clone (preferred):
 
 ```bash
-./mvnw -B verify
+make verify
 ```
 
-Or with a system Maven:
+Equivalent Maven commands:
 
 ```bash
-mvn -B verify
-```
-
-Run only unit tests:
-
-```bash
-./mvnw -B test
-```
-
-Lint (Checkstyle):
-
-```bash
+./mvnw -B test          # unit + WireMock integration tests
 ./mvnw -B checkstyle:check
+./mvnw -B verify        # tests + JaCoCo line coverage gate (≥ 60%)
 ```
+
+Makefile shortcuts: `make test`, `make lint`, `make build`, `make docker-up`, `make lock`.
+
+JaCoCo HTML report: `target/site/jacoco/index.html`.
 
 Dependency audit (OWASP):
 
@@ -82,10 +78,11 @@ Dependency audit (OWASP):
 ./mvnw -B org.owasp:dependency-check-maven:check
 ```
 
-Refresh the committed runtime dependency lock:
+Refresh committed lockfiles:
 
 ```bash
-./mvnw -B dependency:list -DincludeScope=runtime -DoutputFile=.mvn/dependency-list.lock
+make lock
+# writes dependencies.lock, pom.lock, and .mvn/dependency-list.lock
 ```
 
 ## Run locally
@@ -93,20 +90,21 @@ Refresh the committed runtime dependency lock:
 ```bash
 export OPENAI_API_KEY=your-key       # optional
 export HUGGINGFACE_API_KEY=your-key  # optional
-./mvnw spring-boot:run
+make run
+# or: ./mvnw spring-boot:run
 ```
 
 - API docs: http://localhost:8080/swagger-ui/index.html
 - Health: http://localhost:8080/actuator/health
+- Metrics: http://localhost:8080/actuator/metrics/thumbnail.ai.fallback.count
 
 ## Docker (one-command startup)
 
 ```bash
 cp .env.example .env   # add keys if you want AI features
-docker compose up --build
+make docker-up
+# or: docker compose up --build
 ```
-
-The compose file starts the app on port `8080` with health checks against `/actuator/health`.
 
 ## API
 
@@ -116,13 +114,13 @@ The compose file starts the app on port `8080` with health checks against `/actu
 | `POST` | `/api/thumbnail/ai-generate` | AI title/colors + HF placement (`file`, `topic`) |
 | `POST` | `/api/thumbnail/ai-style` | Style suggestions only (`topic`) |
 | `GET` | `/actuator/health` | Health probe |
+| `GET` | `/actuator/metrics` | Micrometer metrics |
 
 ## CI
 
-GitHub Actions (`.github/workflows/ci.yml`) runs Checkstyle, `./mvnw verify`, and
-`./mvnw test` on every push/PR. Dependabot (`.github/dependabot.yml`) watches Maven
-and GitHub Actions weekly. An OWASP dependency-check job also runs (non-blocking
-without an `NVD_API_KEY` secret).
+GitHub Actions (`.github/workflows/ci.yml`) runs separate **`lint`** and **`test`** jobs
+(`checkstyle:check`, `./mvnw test`, `./mvnw verify` with JaCoCo). Dependabot watches Maven
+and GitHub Actions weekly. See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

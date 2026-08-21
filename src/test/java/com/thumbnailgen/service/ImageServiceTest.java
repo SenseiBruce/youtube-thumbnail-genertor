@@ -11,7 +11,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ImageServiceTest {
@@ -34,21 +36,42 @@ class ImageServiceTest {
 
         BufferedImage decoded = ImageIO.read(new ByteArrayInputStream(output));
         assertNotNull(decoded, "output should be a decodable PNG");
-        assertTrue(decoded.getWidth() > 0);
-        assertTrue(decoded.getHeight() > 0);
+        assertEquals(1280, decoded.getWidth());
+        assertEquals(720, decoded.getHeight());
     }
 
     @Test
-    void generateAIThumbnail_appliesStyleAndReturnsPng() throws IOException {
+    void generateAIThumbnail_appliesStyleAndReturnsYoutubeSizedPng() throws IOException {
         byte[] inputPng = solidColorPng(320, 180, Color.BLUE);
         AIAssistantService.ThumbnailStyle style = new AIAssistantService.ThumbnailStyle(
-                "EPIC CLIP", "#FFFFFF", "#FFFF00", "Impact", "center");
+                "EPIC CLIP", "#FFFFFF", "#FFFF00", "Impact", "bottom");
 
         byte[] output = imageService.generateAIThumbnail(inputPng, style);
 
         assertNotNull(output);
         assertTrue(output.length > 0);
-        assertNotNull(ImageIO.read(new ByteArrayInputStream(output)));
+        BufferedImage decoded = ImageIO.read(new ByteArrayInputStream(output));
+        assertNotNull(decoded);
+        assertEquals(1280, decoded.getWidth());
+        assertEquals(720, decoded.getHeight());
+    }
+
+    @Test
+    void generateThumbnail_rejectsInvalidBytes() {
+        assertThrows(IOException.class, () -> imageService.generateThumbnail(new byte[]{1, 2, 3}, "x"));
+    }
+
+    @Test
+    void generateAIThumbnail_supportsEachPlacement() throws IOException {
+        byte[] inputPng = solidColorPng(400, 300, Color.GRAY);
+        for (String placement : new String[]{"top", "bottom", "left", "right", "center"}) {
+            AIAssistantService.ThumbnailStyle style = new AIAssistantService.ThumbnailStyle(
+                    "TITLE", "#FFFFFF", "#00FF00", "Impact", placement);
+            byte[] output = imageService.generateAIThumbnail(inputPng, style);
+            BufferedImage decoded = ImageIO.read(new ByteArrayInputStream(output));
+            assertEquals(1280, decoded.getWidth(), "placement=" + placement);
+            assertEquals(720, decoded.getHeight(), "placement=" + placement);
+        }
     }
 
     private static byte[] solidColorPng(int width, int height, Color color) throws IOException {

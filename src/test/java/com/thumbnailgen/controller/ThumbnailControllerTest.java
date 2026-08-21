@@ -82,4 +82,31 @@ class ThumbnailControllerTest {
                 .andExpect(jsonPath("$.primaryColor").value("#FFFFFF"))
                 .andExpect(jsonPath("$.placement").value("center"));
     }
+
+    @Test
+    void aiGenerate_returnsPngFromStyledPipeline() throws Exception {
+        byte[] pngBytes = new byte[]{(byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A};
+        AIAssistantService.ThumbnailStyle style = new AIAssistantService.ThumbnailStyle(
+                "AI TITLE", "#FFFFFF", "#FFFF00", "Impact", "top");
+        when(aiAssistantService.suggestThumbnailStyle(eq("cooking"), any(byte[].class)))
+                .thenReturn(style);
+        when(imageService.generateAIThumbnail(any(byte[].class), eq(style)))
+                .thenReturn(pngBytes);
+
+        MockMultipartFile file = new MockMultipartFile(
+                "file", "photo.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[]{9, 9, 9});
+
+        mockMvc.perform(multipart("/api/thumbnail/ai-generate")
+                        .file(file)
+                        .param("topic", "cooking"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.IMAGE_PNG))
+                .andExpect(content().bytes(pngBytes));
+    }
+
+    @Test
+    void generate_missingFile_returnsBadRequest() throws Exception {
+        mockMvc.perform(multipart("/api/thumbnail/generate").param("title", "x"))
+                .andExpect(status().isBadRequest());
+    }
 }

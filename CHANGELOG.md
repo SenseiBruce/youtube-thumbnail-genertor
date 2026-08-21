@@ -1,0 +1,25 @@
+# Changelog
+
+All notable changes to this project are documented in this file.
+
+## [1.1.0] - 2026-08-21
+
+### Added
+- `TextPlacement` helper with exhaustive placement region tests
+- WireMock-backed OpenAI and HuggingFace integration tests (no live network)
+- JaCoCo line-coverage gate (60%) bound to `./mvnw verify`
+- Micrometer fallback counter `thumbnail.ai.fallback.count`
+- Typed `AiIntegrationException` mapped to `ai_service_unavailable`
+- Bean Validation (`@NotBlank` / `@NotNull`) on controller inputs
+- Root `dependencies.lock` / `pom.lock` plus Makefile `test`/`lint`/`verify` targets
+- CONTRIBUTING guide and split CI jobs named `lint` and `test`
+
+### Changed
+- Thumbnail output forced to exact 1280×720 via `Scalr.Mode.FIT_EXACT`
+- AI provider URLs are configurable for local/stub testing
+
+## [1.0.0] - 2025-11
+
+### Added
+- Initial Spring Boot thumbnail generator with ChatGPT + HuggingFace integration
+- Docker Compose, Actuator health, Checkstyle, and base unit tests
