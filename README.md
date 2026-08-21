@@ -49,41 +49,43 @@ huggingface.api.key=${HUGGINGFACE_API_KEY:}
 If keys are unset, AI endpoints fall back to deterministic local styles and increment
 `thumbnail.ai.fallback.count` (visible under `/actuator/metrics`).
 
-> **Security note:** Any API keys previously committed to this repository should be
-> rotated in the OpenAI and HuggingFace dashboards.
+See [SECURITY.md](SECURITY.md) for secret-handling policy and key rotation guidance.
 
 ## Install, build, and test
 
-From a fresh clone (preferred):
+From a fresh clone the **test suite** is:
+
+```bash
+./scripts/run-tests.sh
+# equivalents:
+make test
+npm test
+./mvnw -B test
+```
+
+Full gate (tests + JaCoCo ≥ 60%):
 
 ```bash
 make verify
+# or: ./mvnw -B verify
 ```
 
-Equivalent Maven commands:
+Lint:
 
 ```bash
-./mvnw -B test          # unit + WireMock integration tests
-./mvnw -B checkstyle:check
-./mvnw -B verify        # tests + JaCoCo line coverage gate (≥ 60%)
+make lint
+# or: npm run lint
 ```
 
-Makefile shortcuts: `make test`, `make lint`, `make build`, `make docker-up`, `make lock`.
-
-JaCoCo HTML report: `target/site/jacoco/index.html`.
-
-Dependency audit (OWASP):
+Dependency lockfiles (committed; CI fails on drift):
 
 ```bash
-./mvnw -B org.owasp:dependency-check-maven:check
+make lock          # refresh dependencies.lock, pom.lock, dependencies-lock.json, …
+make lock-check    # ./scripts/lock-deps.sh --check
 ```
 
-Refresh committed lockfiles:
-
-```bash
-make lock
-# writes dependencies.lock, pom.lock, and .mvn/dependency-list.lock
-```
+JaCoCo HTML report: `target/site/jacoco/index.html`  
+Surefire reports: `target/surefire-reports/`
 
 ## Run locally
 

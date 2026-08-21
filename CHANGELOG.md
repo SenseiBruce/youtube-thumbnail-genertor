@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.2.0] - 2026-08-21
+
+### Added
+- `ImageEnhancer` and `ThumbnailTextRenderer` collaborators with dedicated tests
+- DTO package (`ThumbnailStyleResponse`, `AiStyleRequest`) and image content-type checks
+- `scripts/run-tests.sh`, `scripts/lock-deps.sh --check`, `dependencies-lock.json`, `package-lock.json`
+- CI lockfile drift check and Surefire report artifacts
+- `SECURITY.md`
+
+### Changed
+- `ImageService` is a thin facade over enhancer + text renderer
+- README test/lock commands made explicit for fresh-clone buyers
+
 ## [1.1.0] - 2026-08-21
 
 ### Added
