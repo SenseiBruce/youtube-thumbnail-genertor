@@ -24,7 +24,11 @@ public class PromptEnhancerService {
         String hookWord = HOOK_WORDS.get(random.nextInt(HOOK_WORDS.size()));
         
         if (keyWord != null && keyWord.length() > 2) {
-            return hookWord + " " + keyWord.toUpperCase();
+            String normalized = keyWord.toUpperCase();
+            if (normalized.length() > 12) {
+                normalized = normalized.substring(0, 12);
+            }
+            return hookWord + " " + normalized;
         } else {
             String contextWord = CONTEXT_WORDS.get(random.nextInt(CONTEXT_WORDS.size()));
             return hookWord + " " + contextWord;
