@@ -53,35 +53,31 @@ See [SECURITY.md](SECURITY.md) for secret-handling policy and key rotation guida
 
 ## Install, build, and test
 
-From a fresh clone the **test suite** is:
+This is a **Maven / Java 17** project (not npm). From a fresh clone:
 
 ```bash
-./scripts/run-tests.sh
-# equivalents:
-make test
-npm test
 ./mvnw -B test
 ```
 
-Full gate (tests + JaCoCo ≥ 60%):
+Full gate (tests + JaCoCo ≥ 60% line coverage):
 
 ```bash
-make verify
-# or: ./mvnw -B verify
+./mvnw -B verify
 ```
 
 Lint:
 
 ```bash
-make lint
-# or: npm run lint
+./mvnw -B checkstyle:check
 ```
 
-Dependency lockfiles (committed; CI fails on drift):
+Makefile aliases: `make test`, `make lint`, `make verify`, `make build`.
+
+Dependency lockfiles (`pom.lock`, `dependencies.lock`, `dependencies-lock.json`, `maven-dependencies.txt`) are committed. Refresh / check:
 
 ```bash
-make lock          # refresh dependencies.lock, pom.lock, dependencies-lock.json, …
-make lock-check    # ./scripts/lock-deps.sh --check
+make lock
+make lock-check
 ```
 
 JaCoCo HTML report: `target/site/jacoco/index.html`  

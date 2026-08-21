@@ -6,7 +6,7 @@ build:
 
 ## Run the full automated test suite (unit + WireMock integration)
 test:
-	./scripts/run-tests.sh
+	./mvnw -B test
 
 ## Lint with Checkstyle
 lint:
