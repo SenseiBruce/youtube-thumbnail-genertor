@@ -55,14 +55,14 @@
       "group": "org.apache.logging.log4j",
       "artifact": "log4j-to-slf4j",
       "type": "jar",
-      "version": "2.24.3",
+      "version": "2.25.4",
       "scope": "compile"
     },
     {
       "group": "org.apache.logging.log4j",
       "artifact": "log4j-api",
       "type": "jar",
-      "version": "2.24.3",
+      "version": "2.25.4",
       "scope": "compile"
     },
     {
@@ -97,42 +97,42 @@
       "group": "com.fasterxml.jackson.core",
       "artifact": "jackson-databind",
       "type": "jar",
-      "version": "2.19.1",
+      "version": "2.19.0",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.core",
       "artifact": "jackson-annotations",
       "type": "jar",
-      "version": "2.19.1",
+      "version": "2.19.0",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.core",
       "artifact": "jackson-core",
       "type": "jar",
-      "version": "2.19.1",
+      "version": "2.19.0",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.datatype",
       "artifact": "jackson-datatype-jdk8",
       "type": "jar",
-      "version": "2.19.1",
+      "version": "2.19.0",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.datatype",
       "artifact": "jackson-datatype-jsr310",
       "type": "jar",
-      "version": "2.19.1",
+      "version": "2.19.0",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.module",
       "artifact": "jackson-module-parameter-names",
       "type": "jar",
-      "version": "2.19.1",
+      "version": "2.19.0",
       "scope": "compile"
     },
     {
@@ -146,14 +146,14 @@
       "group": "org.apache.tomcat.embed",
       "artifact": "tomcat-embed-core",
       "type": "jar",
-      "version": "10.1.42",
+      "version": "10.1.55",
       "scope": "compile"
     },
     {
       "group": "org.apache.tomcat.embed",
       "artifact": "tomcat-embed-websocket",
       "type": "jar",
-      "version": "10.1.42",
+      "version": "10.1.55",
       "scope": "compile"
     },
     {
@@ -272,7 +272,7 @@
       "group": "org.apache.tomcat.embed",
       "artifact": "tomcat-embed-el",
       "type": "jar",
-      "version": "10.1.42",
+      "version": "10.1.55",
       "scope": "compile"
     },
     {
@@ -335,7 +335,7 @@
       "group": "org.apache.commons",
       "artifact": "commons-lang3",
       "type": "jar",
-      "version": "3.17.0",
+      "version": "3.18.0",
       "scope": "compile"
     },
     {
@@ -356,7 +356,7 @@
       "group": "com.fasterxml.jackson.dataformat",
       "artifact": "jackson-dataformat-yaml",
       "type": "jar",
-      "version": "2.19.1",
+      "version": "2.19.0",
       "scope": "compile"
     },
     {
@@ -395,116 +395,11 @@
       "scope": "compile"
     },
     {
-      "group": "com.theokanning.openai-gpt3-java",
-      "artifact": "service",
-      "type": "jar",
-      "version": "0.18.2",
-      "scope": "compile"
-    },
-    {
-      "group": "com.theokanning.openai-gpt3-java",
-      "artifact": "client",
-      "type": "jar",
-      "version": "0.18.2",
-      "scope": "compile"
-    },
-    {
-      "group": "com.theokanning.openai-gpt3-java",
-      "artifact": "api",
-      "type": "jar",
-      "version": "0.18.2",
-      "scope": "compile"
-    },
-    {
-      "group": "com.knuddels",
-      "artifact": "jtokkit",
-      "type": "jar",
-      "version": "0.5.1",
-      "scope": "compile"
-    },
-    {
-      "group": "com.squareup.retrofit2",
-      "artifact": "retrofit",
-      "type": "jar",
-      "version": "2.9.0",
-      "scope": "compile"
-    },
-    {
-      "group": "com.squareup.okhttp3",
-      "artifact": "okhttp",
-      "type": "jar",
-      "version": "3.14.9",
-      "scope": "compile"
-    },
-    {
-      "group": "com.squareup.okio",
-      "artifact": "okio",
-      "type": "jar",
-      "version": "1.17.2",
-      "scope": "compile"
-    },
-    {
-      "group": "com.squareup.retrofit2",
-      "artifact": "adapter-rxjava2",
-      "type": "jar",
-      "version": "2.9.0",
-      "scope": "compile"
-    },
-    {
-      "group": "io.reactivex.rxjava2",
-      "artifact": "rxjava",
-      "type": "jar",
-      "version": "2.0.0",
-      "scope": "compile"
-    },
-    {
-      "group": "org.reactivestreams",
-      "artifact": "reactive-streams",
-      "type": "jar",
-      "version": "1.0.4",
-      "scope": "compile"
-    },
-    {
-      "group": "com.squareup.retrofit2",
-      "artifact": "converter-jackson",
-      "type": "jar",
-      "version": "2.9.0",
-      "scope": "runtime"
-    },
-    {
-      "group": "com.kjetland",
-      "artifact": "mbknor-jackson-jsonschema_2.12",
-      "type": "jar",
-      "version": "1.0.34",
-      "scope": "runtime"
-    },
-    {
-      "group": "org.scala-lang",
-      "artifact": "scala-library",
-      "type": "jar",
-      "version": "2.12.8",
-      "scope": "runtime"
-    },
-    {
-      "group": "javax.validation",
-      "artifact": "validation-api",
-      "type": "jar",
-      "version": "2.0.1.Final",
-      "scope": "runtime"
-    },
-    {
       "group": "org.slf4j",
       "artifact": "slf4j-api",
       "type": "jar",
       "version": "2.0.17",
       "scope": "compile"
-    },
-    {
-      "group": "io.github.classgraph",
-      "artifact": "classgraph",
-      "type": "jar",
-      "version": "4.8.21",
-      "scope": "runtime"
     },
     {
       "group": "jakarta.xml.bind",
