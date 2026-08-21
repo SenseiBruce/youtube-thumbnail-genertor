@@ -190,9 +190,13 @@ public class ThumbnailTextRenderer {
 
         while ((bounds.getWidth() > area.width * utilization || fm.getHeight() > area.height * utilization)
                 && font.getSize() > 30) {
-            font = new Font(font.getName(), font.getStyle(), font.getSize() - 6);
+            int nextSize = Math.max(30, font.getSize() - 6);
+            font = new Font(font.getName(), font.getStyle(), nextSize);
             fm = g.getFontMetrics(font);
             bounds = fm.getStringBounds(text, g);
+            if (nextSize == 30) {
+                break;
+            }
         }
 
         return font;
