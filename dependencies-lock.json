@@ -6,70 +6,70 @@
       "group": "org.springframework.boot",
       "artifact": "spring-boot-starter-web",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "org.springframework.boot",
       "artifact": "spring-boot-starter",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "org.springframework.boot",
       "artifact": "spring-boot",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "org.springframework.boot",
       "artifact": "spring-boot-autoconfigure",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "org.springframework.boot",
       "artifact": "spring-boot-starter-logging",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "ch.qos.logback",
       "artifact": "logback-classic",
       "type": "jar",
-      "version": "1.5.6",
+      "version": "1.5.18",
       "scope": "compile"
     },
     {
       "group": "ch.qos.logback",
       "artifact": "logback-core",
       "type": "jar",
-      "version": "1.5.6",
+      "version": "1.5.18",
       "scope": "compile"
     },
     {
       "group": "org.apache.logging.log4j",
       "artifact": "log4j-to-slf4j",
       "type": "jar",
-      "version": "2.23.1",
+      "version": "2.24.3",
       "scope": "compile"
     },
     {
       "group": "org.apache.logging.log4j",
       "artifact": "log4j-api",
       "type": "jar",
-      "version": "2.23.1",
+      "version": "2.24.3",
       "scope": "compile"
     },
     {
       "group": "org.slf4j",
       "artifact": "jul-to-slf4j",
       "type": "jar",
-      "version": "2.0.13",
+      "version": "2.0.17",
       "scope": "compile"
     },
     {
@@ -83,168 +83,168 @@
       "group": "org.yaml",
       "artifact": "snakeyaml",
       "type": "jar",
-      "version": "2.2",
+      "version": "2.4",
       "scope": "compile"
     },
     {
       "group": "org.springframework.boot",
       "artifact": "spring-boot-starter-json",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.core",
       "artifact": "jackson-databind",
       "type": "jar",
-      "version": "2.17.1",
+      "version": "2.19.1",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.core",
       "artifact": "jackson-annotations",
       "type": "jar",
-      "version": "2.17.1",
+      "version": "2.19.1",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.core",
       "artifact": "jackson-core",
       "type": "jar",
-      "version": "2.17.1",
+      "version": "2.19.1",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.datatype",
       "artifact": "jackson-datatype-jdk8",
       "type": "jar",
-      "version": "2.17.1",
+      "version": "2.19.1",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.datatype",
       "artifact": "jackson-datatype-jsr310",
       "type": "jar",
-      "version": "2.17.1",
+      "version": "2.19.1",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.module",
       "artifact": "jackson-module-parameter-names",
       "type": "jar",
-      "version": "2.17.1",
+      "version": "2.19.1",
       "scope": "compile"
     },
     {
       "group": "org.springframework.boot",
       "artifact": "spring-boot-starter-tomcat",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "org.apache.tomcat.embed",
       "artifact": "tomcat-embed-core",
       "type": "jar",
-      "version": "10.1.25",
+      "version": "10.1.42",
       "scope": "compile"
     },
     {
       "group": "org.apache.tomcat.embed",
       "artifact": "tomcat-embed-websocket",
       "type": "jar",
-      "version": "10.1.25",
+      "version": "10.1.42",
       "scope": "compile"
     },
     {
       "group": "org.springframework",
       "artifact": "spring-web",
       "type": "jar",
-      "version": "6.1.10",
+      "version": "6.2.8",
       "scope": "compile"
     },
     {
       "group": "org.springframework",
       "artifact": "spring-beans",
       "type": "jar",
-      "version": "6.1.10",
+      "version": "6.2.8",
       "scope": "compile"
     },
     {
       "group": "org.springframework",
       "artifact": "spring-webmvc",
       "type": "jar",
-      "version": "6.1.10",
+      "version": "6.2.8",
       "scope": "compile"
     },
     {
       "group": "org.springframework",
       "artifact": "spring-aop",
       "type": "jar",
-      "version": "6.1.10",
+      "version": "6.2.8",
       "scope": "compile"
     },
     {
       "group": "org.springframework",
       "artifact": "spring-context",
       "type": "jar",
-      "version": "6.1.10",
+      "version": "6.2.8",
       "scope": "compile"
     },
     {
       "group": "org.springframework",
       "artifact": "spring-expression",
       "type": "jar",
-      "version": "6.1.10",
+      "version": "6.2.8",
       "scope": "compile"
     },
     {
       "group": "org.springframework.boot",
       "artifact": "spring-boot-starter-actuator",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "org.springframework.boot",
       "artifact": "spring-boot-actuator-autoconfigure",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "org.springframework.boot",
       "artifact": "spring-boot-actuator",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "io.micrometer",
       "artifact": "micrometer-observation",
       "type": "jar",
-      "version": "1.13.1",
+      "version": "1.15.1",
       "scope": "compile"
     },
     {
       "group": "io.micrometer",
       "artifact": "micrometer-commons",
       "type": "jar",
-      "version": "1.13.1",
+      "version": "1.15.1",
       "scope": "compile"
     },
     {
       "group": "io.micrometer",
       "artifact": "micrometer-jakarta9",
       "type": "jar",
-      "version": "1.13.1",
+      "version": "1.15.1",
       "scope": "compile"
     },
     {
       "group": "io.micrometer",
       "artifact": "micrometer-core",
       "type": "jar",
-      "version": "1.13.1",
+      "version": "1.15.1",
       "scope": "compile"
     },
     {
@@ -265,21 +265,21 @@
       "group": "org.springframework.boot",
       "artifact": "spring-boot-starter-validation",
       "type": "jar",
-      "version": "3.3.1",
+      "version": "3.5.3",
       "scope": "compile"
     },
     {
       "group": "org.apache.tomcat.embed",
       "artifact": "tomcat-embed-el",
       "type": "jar",
-      "version": "10.1.25",
+      "version": "10.1.42",
       "scope": "compile"
     },
     {
       "group": "org.hibernate.validator",
       "artifact": "hibernate-validator",
       "type": "jar",
-      "version": "8.0.1.Final",
+      "version": "8.0.2.Final",
       "scope": "compile"
     },
     {
@@ -293,7 +293,7 @@
       "group": "org.jboss.logging",
       "artifact": "jboss-logging",
       "type": "jar",
-      "version": "3.5.3.Final",
+      "version": "3.6.1.Final",
       "scope": "compile"
     },
     {
@@ -307,63 +307,77 @@
       "group": "org.springdoc",
       "artifact": "springdoc-openapi-starter-webmvc-ui",
       "type": "jar",
-      "version": "2.3.0",
+      "version": "2.8.6",
       "scope": "compile"
     },
     {
       "group": "org.springdoc",
       "artifact": "springdoc-openapi-starter-webmvc-api",
       "type": "jar",
-      "version": "2.3.0",
+      "version": "2.8.6",
       "scope": "compile"
     },
     {
       "group": "org.springdoc",
       "artifact": "springdoc-openapi-starter-common",
       "type": "jar",
-      "version": "2.3.0",
+      "version": "2.8.6",
       "scope": "compile"
     },
     {
       "group": "io.swagger.core.v3",
       "artifact": "swagger-core-jakarta",
       "type": "jar",
-      "version": "2.2.19",
+      "version": "2.2.29",
       "scope": "compile"
     },
     {
       "group": "org.apache.commons",
       "artifact": "commons-lang3",
       "type": "jar",
-      "version": "3.14.0",
+      "version": "3.17.0",
       "scope": "compile"
     },
     {
       "group": "io.swagger.core.v3",
       "artifact": "swagger-annotations-jakarta",
       "type": "jar",
-      "version": "2.2.19",
+      "version": "2.2.29",
       "scope": "compile"
     },
     {
       "group": "io.swagger.core.v3",
       "artifact": "swagger-models-jakarta",
       "type": "jar",
-      "version": "2.2.19",
+      "version": "2.2.29",
       "scope": "compile"
     },
     {
       "group": "com.fasterxml.jackson.dataformat",
       "artifact": "jackson-dataformat-yaml",
       "type": "jar",
-      "version": "2.17.1",
+      "version": "2.19.1",
       "scope": "compile"
     },
     {
       "group": "org.webjars",
       "artifact": "swagger-ui",
       "type": "jar",
-      "version": "5.10.3",
+      "version": "5.20.1",
+      "scope": "compile"
+    },
+    {
+      "group": "org.webjars",
+      "artifact": "webjars-locator-lite",
+      "type": "jar",
+      "version": "1.1.0",
+      "scope": "compile"
+    },
+    {
+      "group": "org.jspecify",
+      "artifact": "jspecify",
+      "type": "jar",
+      "version": "1.0.0",
       "scope": "compile"
     },
     {
@@ -377,7 +391,7 @@
       "group": "org.projectlombok",
       "artifact": "lombok",
       "type": "jar",
-      "version": "1.18.32",
+      "version": "1.18.38",
       "scope": "compile"
     },
     {
@@ -419,56 +433,14 @@
       "group": "com.squareup.okhttp3",
       "artifact": "okhttp",
       "type": "jar",
-      "version": "4.12.0",
+      "version": "3.14.9",
       "scope": "compile"
     },
     {
       "group": "com.squareup.okio",
       "artifact": "okio",
       "type": "jar",
-      "version": "3.6.0",
-      "scope": "compile"
-    },
-    {
-      "group": "com.squareup.okio",
-      "artifact": "okio-jvm",
-      "type": "jar",
-      "version": "3.6.0",
-      "scope": "compile"
-    },
-    {
-      "group": "org.jetbrains.kotlin",
-      "artifact": "kotlin-stdlib-common",
-      "type": "jar",
-      "version": "1.9.24",
-      "scope": "compile"
-    },
-    {
-      "group": "org.jetbrains.kotlin",
-      "artifact": "kotlin-stdlib-jdk8",
-      "type": "jar",
-      "version": "1.9.24",
-      "scope": "compile"
-    },
-    {
-      "group": "org.jetbrains.kotlin",
-      "artifact": "kotlin-stdlib",
-      "type": "jar",
-      "version": "1.9.24",
-      "scope": "compile"
-    },
-    {
-      "group": "org.jetbrains",
-      "artifact": "annotations",
-      "type": "jar",
-      "version": "13.0",
-      "scope": "compile"
-    },
-    {
-      "group": "org.jetbrains.kotlin",
-      "artifact": "kotlin-stdlib-jdk7",
-      "type": "jar",
-      "version": "1.9.24",
+      "version": "1.17.2",
       "scope": "compile"
     },
     {
@@ -524,7 +496,7 @@
       "group": "org.slf4j",
       "artifact": "slf4j-api",
       "type": "jar",
-      "version": "2.0.13",
+      "version": "2.0.17",
       "scope": "compile"
     },
     {
@@ -552,14 +524,14 @@
       "group": "org.springframework",
       "artifact": "spring-core",
       "type": "jar",
-      "version": "6.1.10",
+      "version": "6.2.8",
       "scope": "compile"
     },
     {
       "group": "org.springframework",
       "artifact": "spring-jcl",
       "type": "jar",
-      "version": "6.1.10",
+      "version": "6.2.8",
       "scope": "compile"
     }
   ]
