@@ -11,7 +11,7 @@
     </parent>
     <groupId>com.thumbnailgen</groupId>
     <artifactId>thumbnail-generator</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.0</version>
     <name>YouTube Thumbnail Generator</name>
     <description>AI-powered YouTube thumbnail generator with ChatGPT and HuggingFace</description>
 

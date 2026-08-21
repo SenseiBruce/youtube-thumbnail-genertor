@@ -1,4 +1,4 @@
-com.thumbnailgen:thumbnail-generator:jar:1.0.0
+com.thumbnailgen:thumbnail-generator:jar:1.2.0
 +- org.springframework.boot:spring-boot-starter-web:jar:3.3.1:compile
 |  +- org.springframework.boot:spring-boot-starter:jar:3.3.1:compile
 |  |  +- org.springframework.boot:spring-boot:jar:3.3.1:compile
