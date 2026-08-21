@@ -52,4 +52,14 @@ class PromptEnhancerServiceTest {
         assertTrue(HOOK_WORDS.contains(parts[0]), "unexpected hook: " + parts[0]);
         assertTrue(CONTEXT_WORDS.contains(parts[1]), "unexpected context: " + parts[1]);
     }
+
+    @Test
+    void enhance_longKeyword_isTruncatedToTwelveChars() {
+        String result = service.enhance("supercalifragilistic");
+        String[] parts = result.split("\\s+", 2);
+        assertEquals(2, parts.length);
+        assertTrue(HOOK_WORDS.contains(parts[0]));
+        assertEquals(12, parts[1].length());
+        assertEquals("SUPERCALIFRA", parts[1]);
+    }
 }

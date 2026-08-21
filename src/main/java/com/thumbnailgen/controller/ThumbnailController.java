@@ -1,5 +1,6 @@
 package com.thumbnailgen.controller;
 
+import com.thumbnailgen.dto.ThumbnailStyleResponse;
 import com.thumbnailgen.service.AIAssistantService;
 import com.thumbnailgen.service.ImageService;
 import com.thumbnailgen.service.PromptEnhancerService;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Validated
 @RestController
@@ -68,24 +67,27 @@ public class ThumbnailController {
     }
 
     @PostMapping(value = "/ai-style")
-    public ResponseEntity<Map<String, String>> getAIStyle(
+    public ResponseEntity<ThumbnailStyleResponse> getAIStyle(
             @RequestParam("topic") @NotBlank String topic
     ) {
         AIAssistantService.ThumbnailStyle style = aiAssistantService.suggestThumbnailStyle(topic);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("title", style.title);
-        response.put("primaryColor", style.primaryColor);
-        response.put("accentColor", style.accentColor);
-        response.put("font", style.font);
-        response.put("placement", style.placement);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new ThumbnailStyleResponse(
+                style.title,
+                style.primaryColor,
+                style.accentColor,
+                style.font,
+                style.placement));
     }
 
     private static void requireNonEmptyUpload(MultipartFile file) {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("Uploaded file must not be empty");
+        }
+        String contentType = file.getContentType();
+        if (contentType != null
+                && !contentType.startsWith("image/")
+                && !MediaType.APPLICATION_OCTET_STREAM_VALUE.equals(contentType)) {
+            throw new IllegalArgumentException("Uploaded file must be an image");
         }
     }
 }

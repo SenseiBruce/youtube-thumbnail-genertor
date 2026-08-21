@@ -1,4 +1,4 @@
-.PHONY: test lint verify build run docker-up lock deps-updates
+.PHONY: test lint verify build run docker-up lock lock-check deps-updates
 
 ## Install dependencies / compile
 build:
@@ -6,7 +6,7 @@ build:
 
 ## Run the full automated test suite (unit + WireMock integration)
 test:
-	./mvnw -B test
+	./scripts/run-tests.sh
 
 ## Lint with Checkstyle
 lint:
@@ -24,10 +24,13 @@ run:
 docker-up:
 	docker compose up --build
 
-## Refresh committed Maven dependency lockfile
+## Refresh committed Maven dependency lockfiles
 lock:
-	./mvnw -B dependency:list -DincludeScope=runtime -DoutputFile=dependencies.lock
-	cp dependencies.lock .mvn/dependency-list.lock
+	./scripts/lock-deps.sh
+
+## Fail if lockfiles drift from pom.xml
+lock-check:
+	./scripts/lock-deps.sh --check
 
 ## Show available dependency updates
 deps-updates:
