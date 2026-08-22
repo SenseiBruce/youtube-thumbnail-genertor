@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+- MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
+- README license and community doc links
+
 ## [1.2.1] - 2026-08-21
 
 ### Removed
