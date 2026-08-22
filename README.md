@@ -122,4 +122,4 @@ and GitHub Actions weekly. See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG
 
 ## License
 
-Private / as configured by the repository owner.
+Released under the [MIT License](LICENSE). See also [CONTRIBUTING.md](CONTRIBUTING.md), [CHANGELOG.md](CHANGELOG.md), and [SECURITY.md](SECURITY.md).
