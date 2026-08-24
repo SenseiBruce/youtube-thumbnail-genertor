@@ -1,9 +1,11 @@
 package com.thumbnailgen.controller;
 
 import com.thumbnailgen.dto.ThumbnailStyleResponse;
+import com.thumbnailgen.dto.TitleValidationResponse;
 import com.thumbnailgen.service.AIAssistantService;
 import com.thumbnailgen.service.ImageService;
 import com.thumbnailgen.service.PromptEnhancerService;
+import com.thumbnailgen.service.TitleValidator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
@@ -70,6 +72,19 @@ public class ThumbnailController {
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
                 .body(result);
+    }
+
+    @PostMapping(value = "/validate-title")
+    public ResponseEntity<TitleValidationResponse> validateTitle(
+            @RequestParam("title") @NotBlank String title
+    ) {
+        TitleValidator.TitleValidationResult result = TitleValidator.validate(title);
+        return ResponseEntity.ok(new TitleValidationResponse(
+                result.getTitle(),
+                result.getLength(),
+                result.getMaxLength(),
+                result.isValid(),
+                result.getMessage()));
     }
 
     @PostMapping(value = "/ai-style")

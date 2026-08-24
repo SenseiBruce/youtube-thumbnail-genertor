@@ -160,5 +160,22 @@ class ThumbnailControllerTest {
                         .param("count", "1"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("validation_error"));
+    void validateTitle_returnsValidForShortTitle() throws Exception {
+        mockMvc.perform(post("/api/thumbnail/validate-title").param("title", "Short hook"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("Short hook"))
+                .andExpect(jsonPath("$.length").value(10))
+                .andExpect(jsonPath("$.maxLength").value(100))
+                .andExpect(jsonPath("$.valid").value(true));
+    }
+
+    @Test
+    void validateTitle_returnsInvalidWhenOverLimit() throws Exception {
+        String title = "x".repeat(101);
+        mockMvc.perform(post("/api/thumbnail/validate-title").param("title", title))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.valid").value(false))
+                .andExpect(jsonPath("$.length").value(101))
+                .andExpect(jsonPath("$.message").value("Title exceeds 100 characters"));
     }
 }

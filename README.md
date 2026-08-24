@@ -109,6 +109,7 @@ make docker-up
 | Method | Path | Description |
 |--------|------|-------------|
 | `POST` | `/api/thumbnail/generate` | Basic thumbnail (`file`, `title`, optional `enhancePrompt`) |
+| `POST` | `/api/thumbnail/validate-title` | Advisory title length check (`title`, max 100 chars) |
 | `POST` | `/api/thumbnail/ai-generate` | AI title/colors + HF placement (`file`, `topic`) |
 | `POST` | `/api/thumbnail/generate-variants` | ZIP of 2–5 title-hook PNG variants (`file`, `title`, optional `count`) |
 | `GET` | `/actuator/health` | Health probe |
