@@ -11,6 +11,7 @@ All notable changes to this project are documented in this file.
 - `POST /api/thumbnail/validate-title` advisory 100-character title check
 - `POST /api/thumbnail/enhance-prompt` returns original and hook-enhanced titles without generating an image
 - `POST /api/thumbnail/validate-image` advisory 1280×720 / 16:9 check
+- `GET /api/style-presets` returns named thumbnail palettes (colors, font, placement)
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
 
