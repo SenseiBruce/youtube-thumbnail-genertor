@@ -15,6 +15,7 @@ All notable changes to this project are documented in this file.
 - `GET /api/fonts` lists overlay font families used by the renderer and style presets
 - `GET /api/placements` lists overlay placement keys used by `TextPlacement`
 - `GET /api/canvas` reports the 1280×720 thumbnail canvas size
+- `GET /api/output-format` reports PNG (`image/png`) as the generated thumbnail format
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
 
