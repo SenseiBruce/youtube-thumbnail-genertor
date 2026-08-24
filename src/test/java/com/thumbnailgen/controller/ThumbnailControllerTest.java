@@ -177,5 +177,12 @@ class ThumbnailControllerTest {
                 .andExpect(jsonPath("$.valid").value(false))
                 .andExpect(jsonPath("$.length").value(101))
                 .andExpect(jsonPath("$.message").value("Title exceeds 100 characters"));
+    void enhancePrompt_returnsOriginalAndEnhanced() throws Exception {
+        when(promptEnhancerService.enhance("raw title")).thenReturn("INSANE TITLE");
+
+        mockMvc.perform(post("/api/thumbnail/enhance-prompt").param("title", "raw title"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.original").value("raw title"))
+                .andExpect(jsonPath("$.enhanced").value("INSANE TITLE"));
     }
 }
