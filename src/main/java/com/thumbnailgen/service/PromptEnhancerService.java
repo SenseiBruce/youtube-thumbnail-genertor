@@ -1,5 +1,6 @@
 package com.thumbnailgen.service;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -33,6 +34,33 @@ public class PromptEnhancerService {
             String contextWord = CONTEXT_WORDS.get(random.nextInt(CONTEXT_WORDS.size()));
             return hookWord + " " + contextWord;
         }
+    }
+
+    /**
+     * Deterministic set of distinct title hooks for A/B thumbnail variants.
+     * Count is clamped to 2–5.
+     */
+    public List<String> enhanceVariants(String rawTitle, int count) {
+        int n = Math.min(5, Math.max(2, count));
+        String tail;
+        if (rawTitle == null || rawTitle.isBlank()) {
+            tail = "WATCH";
+        } else {
+            String keyWord = findKeyWord(rawTitle.trim().split("\\s+"));
+            if (keyWord != null && keyWord.length() > 2) {
+                tail = keyWord.toUpperCase();
+                if (tail.length() > 12) {
+                    tail = tail.substring(0, 12);
+                }
+            } else {
+                tail = CONTEXT_WORDS.get(0);
+            }
+        }
+        ArrayList<String> variants = new ArrayList<>();
+        for (int i = 0; i < n && i < HOOK_WORDS.size(); i++) {
+            variants.add(HOOK_WORDS.get(i) + " " + tail);
+        }
+        return variants;
     }
     
     private String findKeyWord(String[] words) {

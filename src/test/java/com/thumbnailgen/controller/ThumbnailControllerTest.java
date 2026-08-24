@@ -7,17 +7,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -118,6 +124,40 @@ class ThumbnailControllerTest {
         mockMvc.perform(multipart("/api/thumbnail/generate")
                         .file(file)
                         .param("title", "My Title"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("validation_error"));
+    }
+
+    @Test
+    void generateVariants_returnsZipOfDistinctTitles() throws Exception {
+        when(promptEnhancerService.enhanceVariants("cooking", 3))
+                .thenReturn(Arrays.asList("INSANE COOKING", "CRAZY COOKING", "SHOCKING COOKING"));
+        when(imageService.generateThumbnail(any(byte[].class), anyString()))
+                .thenReturn(new byte[]{(byte) 0x89, 0x50});
+
+        MockMultipartFile file = new MockMultipartFile(
+                "file", "photo.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[]{1, 2, 3});
+
+        mockMvc.perform(multipart("/api/thumbnail/generate-variants")
+                        .file(file)
+                        .param("title", "cooking")
+                        .param("count", "3"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.parseMediaType("application/zip")))
+                .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"thumbnail-variants.zip\""));
+
+        verify(imageService, times(3)).generateThumbnail(any(byte[].class), anyString());
+    }
+
+    @Test
+    void generateVariants_rejectsInvalidCount() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                "file", "photo.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[]{1});
+
+        mockMvc.perform(multipart("/api/thumbnail/generate-variants")
+                        .file(file)
+                        .param("title", "cooking")
+                        .param("count", "1"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("validation_error"));
     }
