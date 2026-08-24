@@ -16,8 +16,12 @@ All notable changes to this project are documented in this file.
 - `GET /api/placements` lists overlay placement keys used by `TextPlacement`
 - `GET /api/canvas` reports the 1280×720 thumbnail canvas size
 - `GET /api/output-format` reports PNG (`image/png`) as the generated thumbnail format
+- Weekly scheduled OWASP Dependency-Check (`owasp-weekly.yml`) instead of blocking every PR
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
+
+### Changed
+- PR CI uses Trivy (minutes) instead of OWASP NVD download (hours); drop duplicate `mvn test` before `verify`; cancel in-progress runs; run push CI on `main` only
 
 ## [1.2.1] - 2026-08-21
 
