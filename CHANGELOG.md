@@ -21,6 +21,7 @@ All notable changes to this project are documented in this file.
 - `GET /api/aspect-ratio` reports the 16:9 / 1280×720 YouTube thumbnail canvas
 - `GET /api/allowed-image-types` documents accepted thumbnail upload content types
 - `GET /api/safe-zone` reports the title layout rectangle for 1280×720
+- `GET /api/text-placements` returns top/bottom/left/right/center title rectangles
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
 
