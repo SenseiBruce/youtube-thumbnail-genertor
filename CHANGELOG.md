@@ -17,6 +17,7 @@ All notable changes to this project are documented in this file.
 - `GET /api/canvas` reports the 1280×720 thumbnail canvas size
 - `GET /api/output-format` reports PNG (`image/png`) as the generated thumbnail format
 - Weekly scheduled OWASP Dependency-Check (`owasp-weekly.yml`) instead of blocking every PR
+- `GET /api/defaults` reports canvas size, PNG output, and recommended title length
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
 
