@@ -22,6 +22,7 @@ All notable changes to this project are documented in this file.
 - `GET /api/allowed-image-types` documents accepted thumbnail upload content types
 - `GET /api/safe-zone` reports the title layout rectangle for 1280×720
 - `GET /api/text-placements` returns top/bottom/left/right/center title rectangles
+- `GET /api/default-placement` returns the default text overlay zone (`center`)
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
 
