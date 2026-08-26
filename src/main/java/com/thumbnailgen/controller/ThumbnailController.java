@@ -10,6 +10,12 @@ import com.thumbnailgen.service.TitleValidator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
+import com.thumbnailgen.dto.ThumbnailStyleResponse;
+import com.thumbnailgen.service.AIAssistantService;
+import com.thumbnailgen.service.ImageService;
+import com.thumbnailgen.service.PromptEnhancerService;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import java.io.IOException;
 
 @Validated
 @RestController

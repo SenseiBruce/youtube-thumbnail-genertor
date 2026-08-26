@@ -30,7 +30,7 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 - PR CI uses Trivy (minutes) instead of OWASP NVD download (hours); drop duplicate `mvn test` before `verify`; cancel in-progress runs; run push CI on `main` only
-
+- `GET /api/overlay-threshold` returns the brightness-variance cutoff for title overlays
 ## [1.2.1] - 2026-08-21
 
 ### Removed

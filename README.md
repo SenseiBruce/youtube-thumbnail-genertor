@@ -121,6 +121,9 @@ make docker-up
 | `POST` | `/api/thumbnail/generate-variants` | ZIP of 2–5 title-hook PNG variants (`file`, `title`, optional `count`) |
 | `POST` | `/api/thumbnail/ai-style` | Style suggestions only (`topic`) |
 | `POST` | `/api/thumbnail/validate-image` | Advisory size/aspect check (`file`, 1280×720 / 16:9) |
+| `POST` | `/api/thumbnail/generate` | Basic thumbnail (`file`, `title`, optional `enhancePrompt`) |
+| `POST` | `/api/thumbnail/ai-generate` | AI title/colors + HF placement (`file`, `topic`) |
+| `POST` | `/api/thumbnail/ai-style` | Style suggestions only (`topic`) |
 | `GET` | `/actuator/health` | Health probe |
 | `GET` | `/actuator/metrics` | Micrometer metrics |
 
@@ -131,6 +134,9 @@ Checkstyle, `./mvnw verify` (tests + JaCoCo), and a Trivy filesystem scan. OWASP
 (NVD) is weekly (`owasp-weekly.yml`), not on every PR — that NVD download was taking 1–3 hours.
 Dependabot watches Maven and GitHub Actions weekly. See [CONTRIBUTING.md](CONTRIBUTING.md) and
 [CHANGELOG.md](CHANGELOG.md).
+GitHub Actions (`.github/workflows/ci.yml`) runs separate **`lint`** and **`test`** jobs
+(`checkstyle:check`, `./mvnw test`, `./mvnw verify` with JaCoCo). Dependabot watches Maven
+and GitHub Actions weekly. See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

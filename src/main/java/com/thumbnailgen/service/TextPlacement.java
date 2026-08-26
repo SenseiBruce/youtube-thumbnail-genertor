@@ -19,6 +19,7 @@ public final class TextPlacement {
 
     public static Rectangle getPlacementArea(Rectangle safeZone, String placement) {
         String key = placement == null ? DEFAULT_PLACEMENT : placement.toLowerCase();
+        String key = placement == null ? "center" : placement.toLowerCase();
         switch (key) {
             case "top":
                 return new Rectangle(safeZone.x, safeZone.y, safeZone.width, safeZone.height / 3);
