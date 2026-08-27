@@ -108,6 +108,7 @@ make docker-up
 
 | Method | Path | Description |
 |--------|------|-------------|
+| `GET` | `/api/style-presets` | Named thumbnail palettes (`id`, colors, font, placement) |
 | `POST` | `/api/thumbnail/generate` | Basic thumbnail (`file`, `title`, optional `enhancePrompt`) |
 | `POST` | `/api/thumbnail/validate-title` | Advisory title length check (`title`, max 100 chars) |
 | `POST` | `/api/thumbnail/enhance-prompt` | Preview hook-enhanced title (`title`) without generating an image |
