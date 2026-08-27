@@ -27,6 +27,8 @@ public class ThumbnailTextRenderer {
     public static final String CTA_FONT = "Arial";
     public static final String DEFAULT_CTA = "WATCH NOW";
     public static final int OVERLAY_VARIANCE_THRESHOLD = 50;
+    public static final int TITLE_STROKE_WIDTH = 8;
+    public static final int CTA_STROKE_WIDTH = 5;
 
     public BufferedImage drawSmartTitle(BufferedImage img, String title) {
         Canvas canvas = prepareCanvas(img);
@@ -71,6 +73,7 @@ public class ThumbnailTextRenderer {
 
     boolean needsOverlay(BufferedImage img, Rectangle area) {
         return brightnessVariance(img, area.x, area.y, area.width, area.height) > OVERLAY_VARIANCE_THRESHOLD;
+        return brightnessVariance(img, area.x, area.y, area.width, area.height) > 50;
     }
 
     private static Canvas prepareCanvas(BufferedImage img) {
@@ -184,6 +187,7 @@ public class ThumbnailTextRenderer {
         g.drawString(text, x + shadowOffset, y + shadowOffset);
 
         g.setStroke(new BasicStroke(isMainTitle ? 8 : 5));
+        g.setStroke(new BasicStroke(isMainTitle ? TITLE_STROKE_WIDTH : CTA_STROKE_WIDTH));
         g.setColor(colors.outline);
         for (int dx = -3; dx <= 3; dx++) {
             for (int dy = -3; dy <= 3; dy++) {
