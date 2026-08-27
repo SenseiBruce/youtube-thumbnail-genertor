@@ -21,6 +21,9 @@ import java.util.List;
 @Service
 public class ThumbnailTextRenderer {
 
+    /** Font used for the main YouTube title overlay. */
+    public static final String TITLE_FONT = "Impact";
+
     public BufferedImage drawSmartTitle(BufferedImage img, String title) {
         Canvas canvas = prepareCanvas(img);
         Rectangle safeZone = TextPlacement.safeZone(canvas.width, canvas.height);
@@ -150,7 +153,7 @@ public class ThumbnailTextRenderer {
                 ? Math.max(120, Math.min(w / 6, h / 4))
                 : Math.max(60, Math.min(w / 12, h / 8));
 
-        String fontName = isMainTitle ? "Impact" : "Arial";
+        String fontName = isMainTitle ? TITLE_FONT : "Arial";
         Font font = new Font(fontName, Font.BOLD, fontSize);
         g.setFont(font);
 

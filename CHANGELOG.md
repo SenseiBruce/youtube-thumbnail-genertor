@@ -5,6 +5,7 @@ All notable changes to this project are documented in this file.
 ## [Unreleased]
 
 ### Added
+- `GET /api/title-font` returns the main title overlay font (`Impact`)
 - `GET /api/target-dimensions` returns the 1280x720 thumbnail canvas size
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
