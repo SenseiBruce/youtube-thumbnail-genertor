@@ -125,9 +125,11 @@ make docker-up
 
 ## CI
 
-GitHub Actions (`.github/workflows/ci.yml`) runs separate **`lint`** and **`test`** jobs
-(`checkstyle:check`, `./mvnw test`, `./mvnw verify` with JaCoCo). Dependabot watches Maven
-and GitHub Actions weekly. See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).
+GitHub Actions (`.github/workflows/ci.yml`) runs **`lint`**, **`test`**, and **`dependency-audit`**:
+Checkstyle, `./mvnw verify` (tests + JaCoCo), and a Trivy filesystem scan. OWASP Dependency-Check
+(NVD) is weekly (`owasp-weekly.yml`), not on every PR — that NVD download was taking 1–3 hours.
+Dependabot watches Maven and GitHub Actions weekly. See [CONTRIBUTING.md](CONTRIBUTING.md) and
+[CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
