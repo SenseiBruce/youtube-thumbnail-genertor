@@ -19,6 +19,7 @@ All notable changes to this project are documented in this file.
 - Weekly scheduled OWASP Dependency-Check (`owasp-weekly.yml`) instead of blocking every PR
 - `GET /api/defaults` reports canvas size, PNG output, and recommended title length
 - `GET /api/aspect-ratio` reports the 16:9 / 1280×720 YouTube thumbnail canvas
+- `GET /api/allowed-image-types` documents accepted thumbnail upload content types
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
 
