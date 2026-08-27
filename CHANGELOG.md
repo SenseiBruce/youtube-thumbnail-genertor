@@ -9,6 +9,7 @@ All notable changes to this project are documented in this file.
 - `GET /api/cta-font` returns the CTA overlay font (`Arial`)
 - `GET /api/default-cta` returns the default overlay CTA (`WATCH NOW`)
 - `GET /api/overlay-alpha` returns the ending alpha of the title gradient overlay
+- `GET /api/min-font-size` returns the title shrink floor (`30`)
 - `GET /api/target-dimensions` returns the 1280x720 thumbnail canvas size
 - `POST /api/thumbnail/generate-variants` returns a ZIP of 2–5 distinct title-hook thumbnails plus `titles.txt`
 - `POST /api/thumbnail/validate-title` advisory 100-character title check

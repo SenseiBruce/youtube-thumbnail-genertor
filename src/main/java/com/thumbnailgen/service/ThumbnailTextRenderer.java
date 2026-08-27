@@ -36,6 +36,7 @@ public class ThumbnailTextRenderer {
     public static final int CTA_SHADOW_OFFSET = 4;
     /** Ending alpha (0-255) of the dark gradient overlay behind title text. */
     public static final int OVERLAY_END_ALPHA = 120;
+    public static final int MIN_FONT_SIZE = 30;
 
     public BufferedImage drawSmartTitle(BufferedImage img, String title) {
         Canvas canvas = prepareCanvas(img);
@@ -218,12 +219,12 @@ public class ThumbnailTextRenderer {
         Rectangle2D bounds = fm.getStringBounds(text, g);
 
         while ((bounds.getWidth() > area.width * utilization || fm.getHeight() > area.height * utilization)
-                && font.getSize() > 30) {
-            int nextSize = Math.max(30, font.getSize() - 6);
+                && font.getSize() > MIN_FONT_SIZE) {
+            int nextSize = Math.max(MIN_FONT_SIZE, font.getSize() - 6);
             font = new Font(font.getName(), font.getStyle(), nextSize);
             fm = g.getFontMetrics(font);
             bounds = fm.getStringBounds(text, g);
-            if (nextSize == 30) {
+            if (nextSize == MIN_FONT_SIZE) {
                 break;
             }
         }
