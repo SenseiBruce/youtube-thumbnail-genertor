@@ -7,6 +7,9 @@ import java.awt.Rectangle;
  */
 public final class TextPlacement {
 
+    /** Default overlay zone when a style omits placement. */
+    public static final String DEFAULT_PLACEMENT = "center";
+
     private TextPlacement() {
     }
 
@@ -15,7 +18,7 @@ public final class TextPlacement {
     }
 
     public static Rectangle getPlacementArea(Rectangle safeZone, String placement) {
-        String key = placement == null ? "center" : placement.toLowerCase();
+        String key = placement == null ? DEFAULT_PLACEMENT : placement.toLowerCase();
         switch (key) {
             case "top":
                 return new Rectangle(safeZone.x, safeZone.y, safeZone.width, safeZone.height / 3);

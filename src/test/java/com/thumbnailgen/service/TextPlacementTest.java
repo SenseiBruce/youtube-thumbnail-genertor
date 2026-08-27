@@ -45,5 +45,6 @@ class TextPlacementTest {
         assertEquals(expected, TextPlacement.getPlacementArea(zone, "center"));
         assertEquals(expected, TextPlacement.getPlacementArea(zone, null));
         assertEquals(expected, TextPlacement.getPlacementArea(zone, "unknown"));
+        assertEquals("center", TextPlacement.DEFAULT_PLACEMENT);
     }
 }
