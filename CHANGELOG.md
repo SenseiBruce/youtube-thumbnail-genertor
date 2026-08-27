@@ -10,6 +10,7 @@ All notable changes to this project are documented in this file.
 - `POST /api/thumbnail/generate-variants` returns a ZIP of 2–5 distinct title-hook thumbnails plus `titles.txt`
 - `POST /api/thumbnail/validate-title` advisory 100-character title check
 - `POST /api/thumbnail/enhance-prompt` returns original and hook-enhanced titles without generating an image
+- `POST /api/thumbnail/validate-image` advisory 1280×720 / 16:9 check
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
 
