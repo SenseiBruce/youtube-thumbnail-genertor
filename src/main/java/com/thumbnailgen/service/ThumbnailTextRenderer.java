@@ -29,6 +29,11 @@ public class ThumbnailTextRenderer {
     public static final int OVERLAY_VARIANCE_THRESHOLD = 50;
     public static final int TITLE_STROKE_WIDTH = 8;
     public static final int CTA_STROKE_WIDTH = 5;
+    /** Drop-shadow offset in pixels for the main title. */
+    public static final int TITLE_SHADOW_OFFSET = 6;
+
+    /** Drop-shadow offset in pixels for the CTA overlay. */
+    public static final int CTA_SHADOW_OFFSET = 4;
 
     public BufferedImage drawSmartTitle(BufferedImage img, String title) {
         Canvas canvas = prepareCanvas(img);
@@ -188,6 +193,10 @@ public class ThumbnailTextRenderer {
 
         g.setStroke(new BasicStroke(isMainTitle ? 8 : 5));
         g.setStroke(new BasicStroke(isMainTitle ? TITLE_STROKE_WIDTH : CTA_STROKE_WIDTH));
+        int shadowOffset = isMainTitle ? TITLE_SHADOW_OFFSET : CTA_SHADOW_OFFSET;
+        g.drawString(text, x + shadowOffset, y + shadowOffset);
+
+        g.setStroke(new BasicStroke(isMainTitle ? 8 : 5));
         g.setColor(colors.outline);
         for (int dx = -3; dx <= 3; dx++) {
             for (int dy = -3; dy <= 3; dy++) {
