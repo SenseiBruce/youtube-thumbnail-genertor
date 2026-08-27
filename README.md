@@ -110,7 +110,7 @@ make docker-up
 |--------|------|-------------|
 | `POST` | `/api/thumbnail/generate` | Basic thumbnail (`file`, `title`, optional `enhancePrompt`) |
 | `POST` | `/api/thumbnail/ai-generate` | AI title/colors + HF placement (`file`, `topic`) |
-| `POST` | `/api/thumbnail/ai-style` | Style suggestions only (`topic`) |
+| `POST` | `/api/thumbnail/generate-variants` | ZIP of 2–5 title-hook PNG variants (`file`, `title`, optional `count`) |
 | `GET` | `/actuator/health` | Health probe |
 | `GET` | `/actuator/metrics` | Micrometer metrics |
 

@@ -6,6 +6,7 @@ import com.thumbnailgen.service.ImageService;
 import com.thumbnailgen.service.PromptEnhancerService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Validated
 @RestController
@@ -77,6 +83,36 @@ public class ThumbnailController {
                 style.accentColor,
                 style.font,
                 style.placement));
+    }
+
+    @PostMapping(value = "/generate-variants", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<byte[]> generateVariants(
+            @RequestParam("file") @NotNull MultipartFile file,
+            @RequestParam("title") @NotBlank String title,
+            @RequestParam(value = "count", required = false, defaultValue = "3") int count
+    ) throws IOException {
+        requireNonEmptyUpload(file);
+        if (count < 2 || count > 5) {
+            throw new IllegalArgumentException("count must be between 2 and 5");
+        }
+        List<String> titles = promptEnhancerService.enhanceVariants(title, count);
+        byte[] imageBytes = file.getBytes();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+            for (int i = 0; i < titles.size(); i++) {
+                byte[] png = imageService.generateThumbnail(imageBytes, titles.get(i));
+                zos.putNextEntry(new ZipEntry("variant-" + (i + 1) + ".png"));
+                zos.write(png);
+                zos.closeEntry();
+            }
+            zos.putNextEntry(new ZipEntry("titles.txt"));
+            zos.write(String.join("\n", titles).getBytes(StandardCharsets.UTF_8));
+            zos.closeEntry();
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/zip"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"thumbnail-variants.zip\"")
+                .body(baos.toByteArray());
     }
 
     private static void requireNonEmptyUpload(MultipartFile file) {

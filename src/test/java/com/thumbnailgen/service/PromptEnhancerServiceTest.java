@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -61,5 +62,23 @@ class PromptEnhancerServiceTest {
         assertTrue(HOOK_WORDS.contains(parts[0]));
         assertEquals(12, parts[1].length());
         assertEquals("SUPERCALIFRA", parts[1]);
+    }
+
+    @Test
+    void enhanceVariants_returnsDistinctHookPlusKeyword() {
+        List<String> variants = service.enhanceVariants("cooking pasta", 3);
+        assertEquals(3, variants.size());
+        assertEquals("INSANE COOKING", variants.get(0));
+        assertEquals("CRAZY COOKING", variants.get(1));
+        assertEquals("SHOCKING COOKING", variants.get(2));
+        assertEquals(3, new HashSet<>(variants).size());
+    }
+
+    @Test
+    void enhanceVariants_clampsCountAndHandlesBlank() {
+        List<String> variants = service.enhanceVariants("   ", 9);
+        assertEquals(5, variants.size());
+        assertEquals("INSANE WATCH", variants.get(0));
+        assertEquals("ULTIMATE WATCH", variants.get(4));
     }
 }
