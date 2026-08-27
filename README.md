@@ -113,6 +113,7 @@ make docker-up
 | `GET` | `/api/placements` | Overlay placement keys (`id`, `description`: top/bottom/left/right/center) |
 | `GET` | `/api/canvas` | Output canvas size (`width`/`height`, 1280×720) |
 | `GET` | `/api/output-format` | Generated image format (`format`, `mediaType`; PNG) |
+| `GET` | `/api/defaults` | Canvas size, PNG output, recommended title max chars |
 | `POST` | `/api/thumbnail/generate` | Basic thumbnail (`file`, `title`, optional `enhancePrompt`) |
 | `POST` | `/api/thumbnail/validate-title` | Advisory title length check (`title`, max 100 chars) |
 | `POST` | `/api/thumbnail/enhance-prompt` | Preview hook-enhanced title (`title`) without generating an image |
