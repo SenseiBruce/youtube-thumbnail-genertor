@@ -23,6 +23,8 @@ public class ThumbnailTextRenderer {
 
     /** Font used for the main YouTube title overlay. */
     public static final String TITLE_FONT = "Impact";
+    /** Font used for CTA overlays under the main title. */
+    public static final String CTA_FONT = "Arial";
 
     public BufferedImage drawSmartTitle(BufferedImage img, String title) {
         Canvas canvas = prepareCanvas(img);
@@ -154,6 +156,7 @@ public class ThumbnailTextRenderer {
                 : Math.max(60, Math.min(w / 12, h / 8));
 
         String fontName = isMainTitle ? TITLE_FONT : "Arial";
+        String fontName = isMainTitle ? "Impact" : CTA_FONT;
         Font font = new Font(fontName, Font.BOLD, fontSize);
         g.setFont(font);
 
