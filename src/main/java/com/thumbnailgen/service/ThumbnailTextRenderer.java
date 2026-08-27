@@ -34,6 +34,8 @@ public class ThumbnailTextRenderer {
 
     /** Drop-shadow offset in pixels for the CTA overlay. */
     public static final int CTA_SHADOW_OFFSET = 4;
+    /** Ending alpha (0-255) of the dark gradient overlay behind title text. */
+    public static final int OVERLAY_END_ALPHA = 120;
 
     public BufferedImage drawSmartTitle(BufferedImage img, String title) {
         Canvas canvas = prepareCanvas(img);
@@ -266,7 +268,7 @@ public class ThumbnailTextRenderer {
     private void drawGradientOverlay(Graphics2D g, Rectangle area) {
         GradientPaint overlay = new GradientPaint(
                 0, area.y, new Color(0, 0, 0, 0),
-                0, area.y + area.height, new Color(0, 0, 0, 120));
+                0, area.y + area.height, new Color(0, 0, 0, OVERLAY_END_ALPHA));
         g.setPaint(overlay);
         g.fillRect(area.x, area.y, area.width, area.height);
     }
