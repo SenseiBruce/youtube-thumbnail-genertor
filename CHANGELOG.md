@@ -13,6 +13,7 @@ All notable changes to this project are documented in this file.
 - `POST /api/thumbnail/validate-image` advisory 1280×720 / 16:9 check
 - `GET /api/style-presets` returns named thumbnail palettes (colors, font, placement)
 - `GET /api/fonts` lists overlay font families used by the renderer and style presets
+- `GET /api/placements` lists overlay placement keys used by `TextPlacement`
 - MIT `LICENSE`, `.editorconfig`, GitHub issue templates, and pull request template
 - README license and community doc links
 
