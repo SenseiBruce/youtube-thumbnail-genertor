@@ -11,6 +11,7 @@ All notable changes to this project are documented in this file.
 - `GET /api/overlay-alpha` returns the ending alpha of the title gradient overlay
 - `GET /api/min-font-size` returns the title shrink floor (`30`)
 - `GET /api/max-title-length` returns the 100-character title cap
+- `GET /api/hook-words` returns the title hook vocabulary (`INSANE`, `SECRET`, …)
 - `GET /api/font-shrink-step` returns the title shrink step (`6`)
 - `GET /api/target-dimensions` returns the 1280x720 thumbnail canvas size
 - `POST /api/thumbnail/generate-variants` returns a ZIP of 2–5 distinct title-hook thumbnails plus `titles.txt`
