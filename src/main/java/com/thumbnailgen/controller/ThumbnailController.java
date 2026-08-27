@@ -1,5 +1,6 @@
 package com.thumbnailgen.controller;
 
+import com.thumbnailgen.dto.EnhancePromptResponse;
 import com.thumbnailgen.dto.ThumbnailStyleResponse;
 import com.thumbnailgen.dto.TitleValidationResponse;
 import com.thumbnailgen.service.AIAssistantService;
@@ -85,6 +86,11 @@ public class ThumbnailController {
                 result.getMaxLength(),
                 result.isValid(),
                 result.getMessage()));
+    @PostMapping(value = "/enhance-prompt")
+    public ResponseEntity<EnhancePromptResponse> enhancePrompt(
+            @RequestParam("title") @NotBlank String title
+    ) {
+        return ResponseEntity.ok(new EnhancePromptResponse(title, promptEnhancerService.enhance(title)));
     }
 
     @PostMapping(value = "/ai-style")
