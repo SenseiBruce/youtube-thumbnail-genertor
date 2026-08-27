@@ -25,6 +25,7 @@ public class ThumbnailTextRenderer {
     public static final String TITLE_FONT = "Impact";
     /** Font used for CTA overlays under the main title. */
     public static final String CTA_FONT = "Arial";
+    public static final String DEFAULT_CTA = "WATCH NOW";
 
     public BufferedImage drawSmartTitle(BufferedImage img, String title) {
         Canvas canvas = prepareCanvas(img);
@@ -59,7 +60,7 @@ public class ThumbnailTextRenderer {
     }
 
     String defaultCta() {
-        return "WATCH NOW";
+        return DEFAULT_CTA;
     }
 
     boolean needsOverlay(BufferedImage img, Rectangle area) {
