@@ -80,4 +80,8 @@ public class PromptEnhancerService {
         
         return bestWord;
     }
+
+    public List<String> getHookWords() {
+        return List.copyOf(HOOK_WORDS);
+    }
 }

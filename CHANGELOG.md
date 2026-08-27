@@ -5,6 +5,7 @@ All notable changes to this project are documented in this file.
 ## [Unreleased]
 
 ### Added
+- `GET /api/hook-words` returns the title hook vocabulary (`INSANE`, `CRAZY`, …)
 - `GET /api/title-font` returns the main title overlay font (`Impact`)
 - `GET /api/cta-font` returns the CTA overlay font (`Arial`)
 - `GET /api/default-cta` returns the default overlay CTA (`WATCH NOW`)
