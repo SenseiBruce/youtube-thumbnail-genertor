@@ -27,3 +27,4 @@ Thanks for improving the YouTube Thumbnail Generator.
 ## Pull requests
 
 CI must be green (`lint` + `test` + `dependency-audit`). Include a short summary of behavior change and how you verified it (`./mvnw -B verify`).
+CI must be green (`lint` + `test` jobs). Include a short summary of behavior change and how you verified it (`./mvnw -B verify`).

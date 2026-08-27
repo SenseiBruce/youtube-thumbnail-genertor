@@ -10,6 +10,10 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+    branches: [main, "cursor/**"]
+  pull_request:
+    branches: [main]
+
 jobs:
   lint:
     name: lint
@@ -43,6 +47,8 @@ jobs:
       - run: chmod +x mvnw scripts/lock-deps.sh
       - name: lockfile check
         run: ./scripts/lock-deps.sh --check
+      - name: test
+        run: ./mvnw -B test
       - name: verify
         run: ./mvnw -B verify
       - name: Upload Surefire and JaCoCo reports
@@ -70,3 +76,17 @@ jobs:
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: "0"
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - run: chmod +x mvnw
+      - name: OWASP dependency check
+        run: ./mvnw -B org.owasp:dependency-check-maven:check
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
