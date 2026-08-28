@@ -80,4 +80,8 @@ public class PromptEnhancerService {
         
         return bestWord;
     }
+
+    public List<String> getContextWords() {
+        return List.copyOf(CONTEXT_WORDS);
+    }
 }
