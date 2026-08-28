@@ -97,4 +97,12 @@ class PromptEnhancerServiceTest {
         assertTrue(words.contains("INSANE"));
         assertTrue(words.contains("UNREAL"));
     }
+
+    @Test
+    void getCommonWords_returnsStopWords() {
+        List<String> words = service.getCommonWords();
+        assertEquals(18, words.size());
+        assertTrue(words.contains("the"));
+        assertTrue(words.contains("were"));
+    }
 }

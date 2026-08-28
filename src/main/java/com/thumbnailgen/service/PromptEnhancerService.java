@@ -13,6 +13,9 @@ public class PromptEnhancerService {
     private static final List<String> CONTEXT_WORDS = Arrays.asList(
         "TRUTH", "HACK", "TRICK", "METHOD", "REVEAL", "FACTS", "STORY", "MOMENT", "REACTION", "RESULT"
     );
+    private static final List<String> COMMON_WORDS = Arrays.asList(
+        "the", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by", "a", "an", "is", "are", "was", "were"
+    );
     private final Random random = new Random();
 
     public String enhance(String rawTitle) {
@@ -64,15 +67,12 @@ public class PromptEnhancerService {
     }
     
     private String findKeyWord(String[] words) {
-        String[] commonWords = {"the", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by", "a", "an", "is", "are", "was", "were"};
-        List<String> common = Arrays.asList(commonWords);
-        
         String bestWord = null;
         int maxLength = 0;
         
         for (String word : words) {
             String clean = word.replaceAll("[^a-zA-Z]", "").toLowerCase();
-            if (clean.length() > maxLength && !common.contains(clean)) {
+            if (clean.length() > maxLength && !COMMON_WORDS.contains(clean)) {
                 bestWord = clean;
                 maxLength = clean.length();
             }
@@ -87,5 +87,9 @@ public class PromptEnhancerService {
 
     public List<String> getContextWords() {
         return List.copyOf(CONTEXT_WORDS);
+    }
+
+    public List<String> getCommonWords() {
+        return List.copyOf(COMMON_WORDS);
     }
 }
