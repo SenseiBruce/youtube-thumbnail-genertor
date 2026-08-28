@@ -18,7 +18,7 @@ public class ImageDimensionValidator {
     public static final int RECOMMENDED_WIDTH = 1280;
     public static final int RECOMMENDED_HEIGHT = 720;
     private static final double TARGET_ASPECT = 16.0 / 9.0;
-    private static final double ASPECT_TOLERANCE = 0.05;
+    public static final double ASPECT_TOLERANCE = 0.05;
 
     public ImageCheck inspect(byte[] imageBytes) throws IOException {
         if (imageBytes == null || imageBytes.length == 0) {
