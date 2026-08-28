@@ -89,4 +89,12 @@ class PromptEnhancerServiceTest {
         assertTrue(words.contains("TRUTH"));
         assertTrue(words.contains("RESULT"));
     }
+
+    @Test
+    void getHookWords_returnsEnhancerVocabulary() {
+        List<String> words = service.getHookWords();
+        assertEquals(9, words.size());
+        assertTrue(words.contains("INSANE"));
+        assertTrue(words.contains("UNREAL"));
+    }
 }
