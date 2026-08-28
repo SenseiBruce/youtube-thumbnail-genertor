@@ -81,4 +81,12 @@ class PromptEnhancerServiceTest {
         assertEquals("INSANE WATCH", variants.get(0));
         assertEquals("ULTIMATE WATCH", variants.get(4));
     }
+
+    @Test
+    void getContextWords_returnsEnhancerVocabulary() {
+        List<String> words = service.getContextWords();
+        assertEquals(10, words.size());
+        assertTrue(words.contains("TRUTH"));
+        assertTrue(words.contains("RESULT"));
+    }
 }
