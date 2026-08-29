@@ -8,6 +8,7 @@ import java.util.Random;
 @Service
 public class PromptEnhancerService {
     public static final String FALLBACK_TITLE = "MUST WATCH";
+    public static final String FALLBACK_VARIANT_TAIL = "WATCH";
     private static final List<String> HOOK_WORDS = Arrays.asList(
         "INSANE", "CRAZY", "SHOCKING", "EPIC", "ULTIMATE", "SECRET", "EXPOSED", "MIND-BLOWN", "UNREAL"
     );
@@ -48,7 +49,7 @@ public class PromptEnhancerService {
         int n = Math.min(5, Math.max(2, count));
         String tail;
         if (rawTitle == null || rawTitle.isBlank()) {
-            tail = "WATCH";
+            tail = FALLBACK_VARIANT_TAIL;
         } else {
             String keyWord = findKeyWord(rawTitle.trim().split("\\s+"));
             if (keyWord != null && keyWord.length() > 2) {
