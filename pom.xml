@@ -19,7 +19,7 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <checkstyle.version>3.4.0</checkstyle.version>
-        <jacoco.version>0.8.12</jacoco.version>
+        <jacoco.version>0.8.15</jacoco.version>
         <wiremock.version>3.9.1</wiremock.version>
         <!-- Security overrides for transitive libraries flagged by OWASP -->
         <tomcat.version>10.1.55</tomcat.version>
