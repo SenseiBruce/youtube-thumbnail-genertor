@@ -9,6 +9,8 @@ import java.util.Random;
 public class PromptEnhancerService {
     public static final String FALLBACK_TITLE = "MUST WATCH";
     public static final String FALLBACK_VARIANT_TAIL = "WATCH";
+    public static final int MIN_VARIANT_COUNT = 2;
+    public static final int MAX_VARIANT_COUNT = 5;
     private static final List<String> HOOK_WORDS = Arrays.asList(
         "INSANE", "CRAZY", "SHOCKING", "EPIC", "ULTIMATE", "SECRET", "EXPOSED", "MIND-BLOWN", "UNREAL"
     );
@@ -46,7 +48,7 @@ public class PromptEnhancerService {
      * Count is clamped to 2–5.
      */
     public List<String> enhanceVariants(String rawTitle, int count) {
-        int n = Math.min(5, Math.max(2, count));
+        int n = Math.min(MAX_VARIANT_COUNT, Math.max(MIN_VARIANT_COUNT, count));
         String tail;
         if (rawTitle == null || rawTitle.isBlank()) {
             tail = FALLBACK_VARIANT_TAIL;
