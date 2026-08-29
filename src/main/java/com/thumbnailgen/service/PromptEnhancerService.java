@@ -7,6 +7,7 @@ import java.util.Random;
 
 @Service
 public class PromptEnhancerService {
+    public static final String FALLBACK_TITLE = "MUST WATCH";
     private static final List<String> HOOK_WORDS = Arrays.asList(
         "INSANE", "CRAZY", "SHOCKING", "EPIC", "ULTIMATE", "SECRET", "EXPOSED", "MIND-BLOWN", "UNREAL"
     );
@@ -20,7 +21,7 @@ public class PromptEnhancerService {
 
     public String enhance(String rawTitle) {
         if (rawTitle == null || rawTitle.isBlank()) {
-            return "MUST WATCH";
+            return FALLBACK_TITLE;
         }
         
         String[] words = rawTitle.trim().split("\\s+");
