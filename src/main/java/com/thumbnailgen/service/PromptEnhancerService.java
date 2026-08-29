@@ -11,6 +11,7 @@ public class PromptEnhancerService {
     public static final String FALLBACK_VARIANT_TAIL = "WATCH";
     public static final int MIN_VARIANT_COUNT = 2;
     public static final int MAX_VARIANT_COUNT = 5;
+    public static final int MAX_KEYWORD_LENGTH = 12;
     private static final List<String> HOOK_WORDS = Arrays.asList(
         "INSANE", "CRAZY", "SHOCKING", "EPIC", "ULTIMATE", "SECRET", "EXPOSED", "MIND-BLOWN", "UNREAL"
     );
@@ -33,8 +34,8 @@ public class PromptEnhancerService {
         
         if (keyWord != null && keyWord.length() > 2) {
             String normalized = keyWord.toUpperCase();
-            if (normalized.length() > 12) {
-                normalized = normalized.substring(0, 12);
+            if (normalized.length() > MAX_KEYWORD_LENGTH) {
+                normalized = normalized.substring(0, MAX_KEYWORD_LENGTH);
             }
             return hookWord + " " + normalized;
         } else {
@@ -56,8 +57,8 @@ public class PromptEnhancerService {
             String keyWord = findKeyWord(rawTitle.trim().split("\\s+"));
             if (keyWord != null && keyWord.length() > 2) {
                 tail = keyWord.toUpperCase();
-                if (tail.length() > 12) {
-                    tail = tail.substring(0, 12);
+                if (tail.length() > MAX_KEYWORD_LENGTH) {
+                    tail = tail.substring(0, MAX_KEYWORD_LENGTH);
                 }
             } else {
                 tail = CONTEXT_WORDS.get(0);
